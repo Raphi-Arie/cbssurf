@@ -28,3 +28,5 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- Site content (trips, news) comes from published Google Sheet CSVs fetched per request in src/lib/sheets.functions.ts; business rules live as pure functions in src/lib/sheets.ts with tests — keeps content editable without code changes.
