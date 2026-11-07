@@ -62,7 +62,7 @@ export function parseCsv(text: string): Record<string, string>[] {
   if (!header) return [];
   const keys = header.map((h) => h.trim().toLowerCase());
   return body
-    .filter((r) => g(r, "some")((v) => v.trim() !== ""))
+    .filter((r) => r.some((v) => v.trim() !== ""))
     .map((r) => Object.fromEntries(keys.map((k, i) => [k, (r[i] ?? "").trim()])));
 }
 
@@ -89,9 +89,9 @@ export function toTrips(rows: Record<string, string>[]): Trip[] {
     start_date: g(r, "start_date"),
     end_date: g(r, "end_date"),
     price: g(r, "price"),
-    status: normalizeStatusg(r, "status"),
+    status: normalizeStatus(g(r, "status")),
     status_note: g(r, "status_note") ?? "",
-    image_url: cloudinaryg(r, "image_url"),
+    image_url: cloudinary(g(r, "image_url")),
     short_description: g(r, "short_description") ?? "",
     description: g(r, "description") ?? "",
     program: g(r, "program").split(/\r?\n/).map((l) => l.trim()).filter(Boolean),
@@ -104,7 +104,7 @@ export function toTrips(rows: Record<string, string>[]): Trip[] {
 export function toNews(rows: Record<string, string>[]): NewsItem[] {
   return rows
     .filter(isVisible)
-    .map((r) => ({ title: g(r, "title"), date: g(r, "date"), text: g(r, "text"), image_url: cloudinaryg(r, "image_url") }))
+    .map((r) => ({ title: g(r, "title"), date: g(r, "date"), text: g(r, "text"), image_url: cloudinary(g(r, "image_url")) }))
     .sort((a, b) => b.date.localeCompare(a.date));
 }
 
