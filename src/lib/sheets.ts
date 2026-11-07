@@ -57,11 +57,12 @@ export function parseCsv(text: string): Record<string, string>[] {
     row.push(field);
     rows.push(row);
   }
-  const [header, ...body] = rows;
+  const header = rows[0];
+  const body = rows.slice(1);
   if (!header) return [];
   const keys = header.map((h) => h.trim().toLowerCase());
   return body
-    .filter((r) => r.some((v) => v.trim() !== ""))
+    .filter((r) => g(r, "some")((v) => v.trim() !== ""))
     .map((r) => Object.fromEntries(keys.map((k, i) => [k, (r[i] ?? "").trim()])));
 }
 
@@ -70,7 +71,9 @@ export function cloudinary(url: string): string {
   return url.replace("/upload/", "/upload/f_auto,q_auto,w_1600/");
 }
 
-const isVisible = (r: Record<string, string>) => (r.visible ?? "").toLowerCase() === "yes";
+const g = (r: Record<string, string>, k: string): string => r[k] ?? "";
+
+const isVisible = (r: Record<string, string>) => g(r, "visible").toLowerCase() === "yes";
 
 function normalizeStatus(s: string): TripStatus {
   const v = s.toLowerCase().trim();
@@ -80,28 +83,28 @@ function normalizeStatus(s: string): TripStatus {
 
 export function toTrips(rows: Record<string, string>[]): Trip[] {
   return rows.filter(isVisible).map((r) => ({
-    id: r.id,
-    title: r.title,
-    location: r.location,
-    start_date: r.start_date,
-    end_date: r.end_date,
-    price: r.price,
-    status: normalizeStatus(r.status ?? ""),
-    status_note: r.status_note ?? "",
-    image_url: cloudinary(r.image_url ?? ""),
-    short_description: r.short_description ?? "",
-    description: r.description ?? "",
-    program: (r.program ?? "").split(/\r?\n/).map((l) => l.trim()).filter(Boolean),
-    included: r.included ?? "",
-    camp_link: r.camp_link ?? "",
-    gallery: (r.gallery_urls ?? "").split(",").map((u) => u.trim()).filter(Boolean).map(cloudinary),
+    id: g(r, "id"),
+    title: g(r, "title"),
+    location: g(r, "location"),
+    start_date: g(r, "start_date"),
+    end_date: g(r, "end_date"),
+    price: g(r, "price"),
+    status: normalizeStatusg(r, "status"),
+    status_note: g(r, "status_note") ?? "",
+    image_url: cloudinaryg(r, "image_url"),
+    short_description: g(r, "short_description") ?? "",
+    description: g(r, "description") ?? "",
+    program: g(r, "program").split(/\r?\n/).map((l) => l.trim()).filter(Boolean),
+    included: g(r, "included") ?? "",
+    camp_link: g(r, "camp_link") ?? "",
+    gallery: g(r, "gallery_urls").split(",").map((u) => u.trim()).filter(Boolean).map(cloudinary),
   }));
 }
 
 export function toNews(rows: Record<string, string>[]): NewsItem[] {
   return rows
     .filter(isVisible)
-    .map((r) => ({ title: r.title, date: r.date, text: r.text, image_url: cloudinary(r.image_url ?? "") }))
+    .map((r) => ({ title: g(r, "title"), date: g(r, "date"), text: g(r, "text"), image_url: cloudinaryg(r, "image_url") }))
     .sort((a, b) => b.date.localeCompare(a.date));
 }
 

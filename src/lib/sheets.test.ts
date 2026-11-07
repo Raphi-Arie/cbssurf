@@ -17,18 +17,18 @@ describe("sheet rules", () => {
     expect(past.map((t) => t.id)).toEqual(["d"]);
   });
   it("only open, non-past trips can be requested", () => {
-    const byId = Object.fromEntries(trips.map((t) => [t.id, t]));
-    expect(canRequest(byId.a, "2026-11-07")).toBe(true);
-    expect(canRequest(byId.b, "2026-11-07")).toBe(false);
-    expect(canRequest(byId.d, "2026-11-07")).toBe(false);
+    const byId = (id: string) => trips.find((t) => t.id === id)!;
+    expect(canRequest(byId("a"), "2026-11-07")).toBe(true);
+    expect(canRequest(byId("b"), "2026-11-07")).toBe(false);
+    expect(canRequest(byId("d"), "2026-11-07")).toBe(false);
   });
-  it("splits program lines into days", () => expect(trips[0].program).toEqual(["Day 1: x", "Day 2: y"]));
+  it("splits program lines into days", () => expect(trips[0]!.program).toEqual(["Day 1: x", "Day 2: y"]));
   it("adds cloudinary transforms", () =>
     expect(cloudinary("https://res.cloudinary.com/x/image/upload/v1/a.jpg")).toBe(
       "https://res.cloudinary.com/x/image/upload/f_auto,q_auto,w_1600/v1/a.jpg",
     ));
   it("builds the WhatsApp message", () =>
-    expect(decodeURIComponent(whatsappLink(trips[0], "Ana", 3))).toBe(
+    expect(decodeURIComponent(whatsappLink(trips[0]!, "Ana", 3))).toBe(
       "https://wa.me/4915735462749?text=Hi Jonas! I’m Ana and I’d like to join the trip Alpha from 2027-03-01 to 2027-03-07 with 3 people.",
     ));
 });
