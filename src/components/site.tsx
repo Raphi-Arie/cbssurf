@@ -1,11 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Instagram, Menu, X, CalendarDays, MapPin, MessageCircle } from "lucide-react";
-import { formatDateRange, formatMonth, type Trip } from "@/lib/sheets";
+import { formatDateRange, formatMonthRange, type Trip } from "@/lib/sheets";
 
 import { Button } from "@/components/ui/button";
 
-export const contactUrl = "https://wa.me/4915735462749?text=" + encodeURIComponent("Hi Jonas! I have a question about CBS Surf.");
+export const contactUrl = "https://wa.me/4915735462749?text=" + encodeURIComponent("Hi CBS Surf! I have a question about your trips.");
 
 const nav = [
   { to: "/trips", label: "Trips" },
@@ -69,7 +69,8 @@ export function Footer() {
         <div className="flex flex-wrap gap-3"><Button asChild variant="secondary"><a href={contactUrl} target="_blank" rel="noopener noreferrer"><MessageCircle /> WhatsApp</a></Button>
         <a href="https://instagram.com/cbs.surf" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-primary-foreground/10 px-5 py-3 font-medium hover:bg-primary-foreground/20">
           <Instagram className="h-5 w-5" /> @cbs.surf
-        </a></div>
+        </a>
+        <Link to="/privacy" className="inline-flex items-center rounded-full px-5 py-3 font-medium text-primary-foreground/70 hover:text-primary-foreground">Privacy</Link></div>
       </div>
     </footer>
   );
@@ -97,7 +98,7 @@ export function TripCard({ trip, past = false }: { trip: Trip; past?: boolean })
         <h3 className="text-2xl font-bold">{trip.title}</h3>
         <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
           <span className="inline-flex items-center gap-1"><MapPin className="h-4 w-4" />{trip.location}</span>
-          <span className="inline-flex items-center gap-1"><CalendarDays className="h-4 w-4" />{past ? formatMonth(trip.start_date) : formatDateRange(trip.start_date, trip.end_date)}</span>
+          <span className="inline-flex items-center gap-1"><CalendarDays className="h-4 w-4" />{past ? formatMonthRange(trip.start_date, trip.end_date) : formatDateRange(trip.start_date, trip.end_date)}</span>
         </p>
         {trip.short_description && <p className="mt-3 text-foreground/80">{trip.short_description}</p>}
         {!past && trip.status_note && <p className="mt-3 text-sm font-semibold text-accent">{trip.status_note}</p>}
