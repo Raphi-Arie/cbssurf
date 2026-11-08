@@ -77,8 +77,13 @@ describe("sheet rules", () => {
     expect(cloudinary("https://res.cloudinary.com/x/image/upload/v1/a.jpg")).toBe(
       "https://res.cloudinary.com/x/image/upload/f_auto,q_auto,w_1600/v1/a.jpg",
     ));
-  it("builds the WhatsApp message", () =>
-    expect(decodeURIComponent(whatsappLink(trips[0]!, "Ana", 3))).toBe(
-      "https://wa.me/4915735462749?text=Hi Jonas! I’m Ana and I’d like to join the trip Alpha from 2027-03-01 to 2027-03-07 with 3 people.",
-    ));
+  it("builds the WhatsApp message with straight apostrophes, formatted dates and person/people", () => {
+    const fuerte = { ...trips[0]!, title: "Fuerteventura", start_date: "2027-01-31", end_date: "2027-02-06" };
+    expect(whatsappLink(fuerte, "Test", 1)).toBe(
+      "https://wa.me/4915735462749?text=Hi%20Jonas!%20I'm%20Test%20and%20I'd%20like%20to%20join%20the%20Fuerteventura%20trip%20(31%20Jan%20%E2%80%93%206%20Feb%202027)%20with%201%20person.",
+    );
+    expect(decodeURIComponent(whatsappLink(fuerte, "Ana", 3))).toBe(
+      "https://wa.me/4915735462749?text=Hi Jonas! I'm Ana and I'd like to join the Fuerteventura trip (31 Jan – 6 Feb 2027) with 3 people.",
+    );
+  });
 });

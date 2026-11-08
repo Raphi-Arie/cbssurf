@@ -132,7 +132,8 @@ export function canRequest(trip: Trip, today: string): boolean {
 }
 
 export function whatsappLink(trip: Trip, name: string, people: number): string {
-  const msg = `Hi Jonas! I’m ${name} and I’d like to join the trip ${trip.title} from ${trip.start_date} to ${trip.end_date} with ${people} people.`;
+  const dates = formatDateRange(trip.start_date, trip.end_date);
+  const msg = `Hi Jonas! I'm ${name} and I'd like to join the ${trip.title} trip (${dates}) with ${people} ${people === 1 ? "person" : "people"}.`;
   return `https://wa.me/4915735462749?text=${encodeURIComponent(msg)}`;
 }
 
