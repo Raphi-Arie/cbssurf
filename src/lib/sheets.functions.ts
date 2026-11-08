@@ -23,3 +23,7 @@ export const getTestimonials = createServerFn({ method: "GET" }).handler(async (
 export const getStats = createServerFn({ method: "GET" }).handler(async () =>
   toStats(await fetchCsv("1025576896")),
 );
+
+// Older open preview tabs can still call this RPC until they reload.
+// Keep a no-content response without fetching the retired News CSV.
+export const getNews = createServerFn({ method: "GET" }).handler(async () => []);
