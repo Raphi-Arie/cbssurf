@@ -28,7 +28,7 @@ export function Header() {
               {n.label}
             </Link>
           ))}
-        <Button asChild className="rounded-full bg-accent text-accent-foreground hover:bg-accent/90"><a href={contactUrl} target="_blank" rel="noreferrer"><MessageCircle />Contact us</a></Button>
+        <Button asChild className="rounded-full bg-accent text-accent-foreground hover:bg-accent/90"><a href={contactUrl} target="_blank" rel="noopener noreferrer"><MessageCircle />Contact us</a></Button>
         </nav>
         <Button variant="ghost" size="icon" className="lg:hidden" aria-label={open ? "Close menu" : "Menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
           {open ? <X /> : <Menu />}
@@ -41,7 +41,7 @@ export function Header() {
               {n.label}
             </Link>
           ))}
-          <Button asChild className="mt-2 bg-accent text-accent-foreground"><a href={contactUrl} target="_blank" rel="noreferrer">Contact us</a></Button>
+          <Button asChild className="mt-2 bg-accent text-accent-foreground"><a href={contactUrl} target="_blank" rel="noopener noreferrer">Contact us</a></Button>
         </nav>
       )}
     </header>
@@ -56,8 +56,8 @@ export function Footer() {
           <p className="font-display text-2xl font-extrabold">CBS<span className="text-sun">.</span>surf</p>
           <p className="mt-1 text-primary-foreground/70">Surf trips with friends. Salt, sun & good people.</p>
         </div>
-        <div className="flex flex-wrap gap-3"><Button asChild variant="secondary"><a href={contactUrl} target="_blank" rel="noreferrer"><MessageCircle /> WhatsApp</a></Button>
-        <a href="https://instagram.com/cbs.surf" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-primary-foreground/10 px-5 py-3 font-medium hover:bg-primary-foreground/20">
+        <div className="flex flex-wrap gap-3"><Button asChild variant="secondary"><a href={contactUrl} target="_blank" rel="noopener noreferrer"><MessageCircle /> WhatsApp</a></Button>
+        <a href="https://instagram.com/cbs.surf" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-primary-foreground/10 px-5 py-3 font-medium hover:bg-primary-foreground/20">
           <Instagram className="h-5 w-5" /> @cbs.surf
         </a></div>
       </div>
