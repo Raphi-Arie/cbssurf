@@ -1,8 +1,9 @@
 # Site updates
-- [ ] Stats CSV parsing, animation and date rules with tests
-- [ ] Navigation, contact and Stories
-- [ ] Home stats and archive teaser
-- [ ] Past trips archive, photo wall and lightbox
-- [ ] Past trip detail presentation
-- [ ] How it works and About pages
-- [ ] Verify page flows and mobile layouts
+- [x] Stats CSV parsing, animation and date rules with tests
+- [x] Navigation, contact and Stories
+- [x] Home stats and archive teaser
+- [x] Past trips archive, photo wall and lightbox
+- [x] Past trip detail presentation
+- [x] How it works and About pages
+- [ ] Live Home, Trips, Stories, archive and request verification blocked: Google returns 401 for the existing Trips and News CSV tabs; owner must republish them.
+- [x] Verify live stats, FAQ, contact and phone layout
