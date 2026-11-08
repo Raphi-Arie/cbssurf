@@ -9,3 +9,11 @@
 - [x] Dates: same-month ranges, two-month past labels
 - [x] Past trips: "Our past trips" heading, balanced photo columns
 - [x] Privacy page with placeholder sections, linked in footer
+- [x] Design refresh: white/cool-grey palette, ocean blue from logo, coral CTAs, dark navy text
+- [x] Round logo image in header/footer + favicon
+- [x] Consistent status badges (open green, coming soon yellow, sold out red)
+- [x] Home past trips section: 3 compact trip cards instead of photo strip
+- [x] Past trips: fixed surf header photo, balanced photo mixing (max 4 per trip first)
+- [x] How it works: connected step cards (desktop line, mobile timeline)
+- [x] Stats grid: 4 cols desktop with centered last row, 2 cols mobile
+- [x] Footer redesign: navy, logo + tagline, nav + Privacy, equal WhatsApp/Instagram buttons
