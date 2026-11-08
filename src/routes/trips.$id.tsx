@@ -122,13 +122,7 @@ function RequestForm({ trip }: { trip: Trip }) {
   const n = parseInt(people, 10);
   const valid = name.trim().length > 0 && name.length <= 100 && Number.isFinite(n) && n >= 1;
   return (
-    <form
-      className="mt-6 space-y-4"
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (valid) window.open(whatsappLink(trip, name.trim(), n), "_blank", "noopener");
-      }}
-    >
+    <form className="mt-6 space-y-4" onSubmit={(e) => e.preventDefault()}>
       <label className="block">
         <span className="text-sm font-semibold">Your name</span>
         <input value={name} onChange={(e) => setName(e.target.value)} maxLength={100} required className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-3 outline-none focus:ring-2 focus:ring-ring" />
@@ -137,9 +131,20 @@ function RequestForm({ trip }: { trip: Trip }) {
         <span className="text-sm font-semibold">Number of people</span>
         <input type="number" min={1} value={people} onChange={(e) => setPeople(e.target.value)} required className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-3 outline-none focus:ring-2 focus:ring-ring" />
       </label>
-      <Button disabled={!valid} className="inline-flex h-auto w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-4 font-bold text-accent-foreground transition hover:scale-[1.02] disabled:opacity-50">
-        <MessageCircle className="h-5 w-5" /> Request via WhatsApp
-      </Button>
+      {valid ? (
+        <a
+          href={whatsappLink(trip, name.trim(), n)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex h-auto w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-4 font-bold text-accent-foreground transition hover:scale-[1.02]"
+        >
+          <MessageCircle className="h-5 w-5" /> Request via WhatsApp
+        </a>
+      ) : (
+        <Button disabled className="inline-flex h-auto w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-4 font-bold text-accent-foreground disabled:opacity-50">
+          <MessageCircle className="h-5 w-5" /> Request via WhatsApp
+        </Button>
+      )}
     </form>
   );
 }
