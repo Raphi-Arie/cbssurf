@@ -16,6 +16,7 @@ export const Route = createFileRoute("/trips/$id")({
     const t = loaderData?.trip;
     const title = t ? `${t.title} surf trip — CBS Surf` : "Trip — CBS Surf";
     const desc = t?.short_description || "A CBS Surf trip.";
+    const image = t?.image_url || t?.gallery[0];
     return {
       meta: [
         { title },
@@ -24,7 +25,7 @@ export const Route = createFileRoute("/trips/$id")({
         { property: "og:description", content: desc },
         { property: "og:type", content: "article" },
         { name: "twitter:card", content: "summary_large_image" },
-        ...(t?.image_url?.startsWith("https://") ? [{ property: "og:image", content: t.image_url }, { name: "twitter:image", content: t.image_url }] : []),
+        ...(image?.startsWith("https://") ? [{ property: "og:image", content: image }, { name: "twitter:image", content: image }] : []),
       ],
     };
   },
