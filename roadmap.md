@@ -6,7 +6,7 @@
 - [x] Past trip detail presentation
 - [x] How it works and About pages
 - [x] Verify live Trips, empty archive, and the WhatsApp request flow
-- [ ] Stories verification blocked: Google returns 401 for the News CSV tab; owner must republish it.
+- [x] Verify Home and Stories after all CSV tabs became available again
 - [ ] Populated archive visual verification blocked: no past trips are currently in the published sheet; photo browsing is covered by tests.
 - [x] Verify live stats, FAQ, contact and phone layout
 - [x] Check the newly supplied Trips publishing link and rerun content checks.
