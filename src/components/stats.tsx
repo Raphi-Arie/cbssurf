@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { statTarget, type Stat } from "@/lib/sheets";
 
-function StatNumber({ value }: { value: string }) {
+function StatNumber({ value, compact = false }: { value: string; compact?: boolean }) {
   const ref = useRef<HTMLParagraphElement>(null);
   const [display, setDisplay] = useState(value);
   const [visible, setVisible] = useState(false);
@@ -26,8 +26,8 @@ function StatNumber({ value }: { value: string }) {
     observer.observe(element);
     return () => { observer.disconnect(); cancelAnimationFrame(frame); };
   }, [value]);
-  return <p ref={ref} aria-label={value} className={`stat-number min-h-16 break-words font-display text-4xl font-extrabold text-primary transition duration-700 motion-reduce:transition-none md:text-5xl ${visible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"}`}><span aria-hidden="true">{display}</span></p>;
+  return <p ref={ref} aria-label={value} className={`stat-number break-words font-display font-extrabold text-primary transition duration-700 motion-reduce:transition-none ${compact ? "text-3xl leading-tight md:text-4xl" : "min-h-16 text-4xl md:text-5xl"} ${visible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"}`}><span aria-hidden="true">{display}</span></p>;
 }
-export function StatsGrid({ stats }: { stats: Stat[] }) {
-  return <div className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">{stats.map((stat, i) => <div key={`${stat.label}-${i}`} className="min-w-0 text-center"><StatNumber value={stat.number} /><p className="mt-2 font-bold">{stat.label}</p>{stat.note && <p className="mt-2 text-sm text-muted-foreground">{stat.note}</p>}</div>)}</div>;
+export function StatsGrid({ stats, compact = false }: { stats: Stat[]; compact?: boolean }) {
+  return <div className={compact ? "grid grid-cols-2 gap-y-6 sm:flex sm:justify-center" : "grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4"}>{stats.map((stat, i) => <div key={`${stat.label}-${i}`} className={compact ? "min-w-0 flex-1 px-3 text-center sm:border-l sm:border-border sm:px-5 sm:first:border-l-0" : "min-w-0 text-center"}><StatNumber value={stat.number} compact={compact} /><p className={compact ? "mt-1 text-sm font-semibold" : "mt-2 font-bold"}>{stat.label}</p>{stat.note && <p className={compact ? "mx-auto mt-1 max-w-48 text-xs leading-relaxed text-muted-foreground" : "mt-2 text-sm text-muted-foreground"}>{stat.note}</p>}</div>)}</div>;
 }
