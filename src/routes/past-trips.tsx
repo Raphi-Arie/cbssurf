@@ -22,7 +22,7 @@ export const Route = createFileRoute("/past-trips")({
   component: PastTrips,
   errorComponent: ({ error }) => <LoadError error={error} />,
 });
-const archiveHero = "https://res.cloudinary.com/ugtwklc6/image/upload/v1794163259/surftrip4.jpg";
+const archiveHero = "https://res.cloudinary.com/ugtwklc6/image/upload/f_auto,q_auto,w_1600/v1794163259/surftrip4.jpg";
 
 function PastTrips() {
   const { past, stats, photos, testimonials } = Route.useLoaderData();
