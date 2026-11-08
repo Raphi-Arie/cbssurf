@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { canRequest, cloudinary, parseCsv, splitTrips, toTrips, whatsappLink, toStats, statTarget, formatDateRange, formatMonth, pastPhotos, toTestimonials } from "./sheets";
+import { canRequest, cloudinary, parseCsv, splitTrips, toTrips, whatsappLink, toStats, statTarget, formatDateRange, formatMonth, formatMonthRange, splitParagraphs, includedItems, pastPhotos, toTestimonials } from "./sheets";
 
 const csv = `id,title,start_date,end_date,status,visible,program,gallery_urls
 a,Alpha,2027-03-01,2027-03-07,open,yes,"Day 1: x
@@ -42,7 +42,20 @@ describe("sheet rules", () => {
   });
   it("formats upcoming ranges and past month labels", () => {
     expect(formatDateRange("2027-01-31", "2027-02-06")).toBe("31 Jan – 6 Feb 2027");
+    expect(formatDateRange("2027-04-17", "2027-04-24")).toBe("17–24 Apr 2027");
     expect(formatMonth("2026-02-01")).toBe("February 2026");
+  });
+  it("labels past trips spanning two months with both months", () => {
+    expect(formatMonthRange("2026-10-25", "2026-11-02")).toBe("Oct – Nov 2026");
+    expect(formatMonthRange("2026-02-01", "2026-02-07")).toBe("February 2026");
+  });
+  it("splits descriptions into paragraphs on empty lines", () => {
+    expect(splitParagraphs("First paragraph.\n\nSecond paragraph.\nStill second.")).toEqual(["First paragraph.", "Second paragraph. Still second."]);
+    expect(splitParagraphs("")).toEqual([]);
+  });
+  it("splits included text into checklist items by comma", () => {
+    expect(includedItems("Surf lessons, accommodation, breakfast")).toEqual(["Surf lessons", "accommodation", "breakfast"]);
+    expect(includedItems("Details coming soon")).toEqual(["Details coming soon"]);
   });
   it("collects every past gallery photo with its trip title", () => {
     expect(pastPhotos(trips).map((p) => p.trip)).toEqual(["Alpha", "Alpha"]);
@@ -80,10 +93,10 @@ describe("sheet rules", () => {
   it("builds the WhatsApp message with straight apostrophes, formatted dates and person/people", () => {
     const fuerte = { ...trips[0]!, title: "Fuerteventura", start_date: "2027-01-31", end_date: "2027-02-06" };
     expect(whatsappLink(fuerte, "Test", 1)).toBe(
-      "https://wa.me/4915735462749?text=Hi%20Jonas!%20I'm%20Test%20and%20I'd%20like%20to%20join%20the%20Fuerteventura%20trip%20(31%20Jan%20%E2%80%93%206%20Feb%202027)%20with%201%20person.",
+      "https://wa.me/4915735462749?text=Hi%20CBS%20Surf!%20I'm%20Test%20and%20I'd%20like%20to%20join%20the%20Fuerteventura%20trip%20(31%20Jan%20%E2%80%93%206%20Feb%202027)%20with%201%20person.",
     );
     expect(decodeURIComponent(whatsappLink(fuerte, "Ana", 3))).toBe(
-      "https://wa.me/4915735462749?text=Hi Jonas! I'm Ana and I'd like to join the Fuerteventura trip (31 Jan – 6 Feb 2027) with 3 people.",
+      "https://wa.me/4915735462749?text=Hi CBS Surf! I'm Ana and I'd like to join the Fuerteventura trip (31 Jan – 6 Feb 2027) with 3 people.",
     );
   });
 });

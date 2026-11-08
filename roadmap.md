@@ -2,3 +2,10 @@
 - [x] Remove Stories pages, navigation, Home section and News CSV loading
 - [x] Connect published testimonials and add archive carousel with rule and interaction tests
 - [x] Verify updated Home and live testimonial carousel on desktop and mobile
+- [x] Replace all "Jonas" mentions with "we" / CBS Surf (WhatsApp messages, How it works, About team)
+- [x] Replace FAQ answers on How it works
+- [x] Sticky mobile request bar on open trip pages (scrolls to form, hides when form visible)
+- [x] Sheet text formatting: description paragraphs, included checklist
+- [x] Dates: same-month ranges, two-month past labels
+- [x] Past trips: "Our past trips" heading, balanced photo columns
+- [x] Privacy page with placeholder sections, linked in footer
