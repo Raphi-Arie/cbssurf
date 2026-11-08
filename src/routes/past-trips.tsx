@@ -20,7 +20,7 @@ function PastTrips() {
     <section className="relative flex min-h-[45vh] items-end md:min-h-[55vh]"><img src={cover} alt="Our surf community" className="absolute inset-0 h-full w-full object-cover" /><div className="absolute inset-0 bg-hero-overlay" /><div className="relative mx-auto w-full max-w-6xl px-5 py-12 text-primary-foreground"><h1 className="text-4xl font-extrabold md:text-6xl">Where we've been</h1><p className="mt-5 max-w-2xl text-lg">Over the years we've taken our community to some of the best surf spots around. Here are some impressions.</p></div></section>
     {stats.length > 0 && <section className="border-b border-border bg-background py-7 md:py-8"><div className="mx-auto max-w-5xl px-5"><StatsGrid stats={stats} compact /></div></section>}
     <Testimonials items={testimonials} />
-    <section className="mx-auto max-w-6xl px-5 pt-14"><div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">{past.map((trip) => <TripCard key={trip.id} trip={trip} past />)}</div>{!past.length && <p className="text-muted-foreground">Past trip impressions coming soon.</p>}</section>
-    {photos.length > 0 && <section className="mx-auto max-w-6xl px-5 pt-16"><h2 className="mb-8 text-4xl font-extrabold">Impressions</h2><PhotoWall photos={photos} /></section>}
+    <section className="mx-auto max-w-6xl px-5 pt-10 md:pt-14"><div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">{past.map((trip) => <TripCard key={trip.id} trip={trip} past />)}</div>{!past.length && <p className="text-muted-foreground">Past trip impressions coming soon.</p>}</section>
+    {photos.length > 0 && <section className="mx-auto max-w-6xl px-5 pt-12 md:pt-16"><h2 className="mb-8 text-3xl font-extrabold md:text-4xl">Impressions</h2><PhotoWall photos={photos} /></section>}
   </>;
 }
