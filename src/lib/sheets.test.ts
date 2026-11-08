@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { canRequest, cloudinary, parseCsv, splitTrips, toTrips, whatsappLink, toStats, statTarget, formatDateRange, formatMonth, pastPhotos } from "./sheets";
+import { canRequest, cloudinary, parseCsv, splitTrips, toTrips, whatsappLink, toStats, statTarget, formatDateRange, formatMonth, pastPhotos, toTestimonials } from "./sheets";
 
 const csv = `id,title,start_date,end_date,status,visible,program,gallery_urls
 a,Alpha,2027-03-01,2027-03-07,open,yes,"Day 1: x
@@ -10,6 +10,17 @@ d,Old,2025-01-01,2025-01-07,open,yes,,`;
 const trips = toTrips(parseCsv(csv));
 
 describe("sheet rules", () => {
+  it("only includes testimonials marked visible yes", () => {
+    const rows = parseCsv("order,name,trip,quote,photo_url,visible\n1,Anna,Fuerteventura 2026,Great crew,,yes\n2,Hidden,Morocco,Not public,,no\n3,Blank,Portugal,Not public,,");
+    expect(toTestimonials(rows).map((item) => item.name)).toEqual(["Anna"]);
+  });
+  it("sorts testimonials by numeric order and preserves their fields", () => {
+    const rows = parseCsv('order,name,trip,quote,photo_url,visible\n10,Ben,Portugal,"Sun, surf and friends",https://example.com/ben.jpg,yes\n2,Anna,Fuerteventura 2026,Great crew,,yes');
+    expect(toTestimonials(rows)).toEqual([
+      { order: 2, name: "Anna", trip: "Fuerteventura 2026", quote: "Great crew", photo_url: "" },
+      { order: 10, name: "Ben", trip: "Portugal", quote: "Sun, surf and friends", photo_url: "https://example.com/ben.jpg" },
+    ]);
+  });
   it("sorts stats by order and preserves text numbers exactly", () => {
     const stats = toStats(parseCsv("order,number,label,note,show_on_home\n3,countless,Stories,,no\n1,400+,People,Good crew,yes\n2,∞,Waves,,yes"));
     expect(stats.map((s) => s.number)).toEqual(["400+", "∞", "countless"]);

@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { parseCsv, toNews, toTrips, toStats } from "./sheets";
+import { parseCsv, toTestimonials, toTrips, toStats } from "./sheets";
 
 const BASE =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vTESVoeBWENGtVi5PwPJojmsHJKimSCPvim4NpA9v8mNy5dO3xm4H5bhnbgJRUtDRROQW42DwZ83djQ/pub";
@@ -16,8 +16,8 @@ export const getTrips = createServerFn({ method: "GET" }).handler(async () =>
   toTrips(await fetchCsv("478495005")),
 );
 
-export const getNews = createServerFn({ method: "GET" }).handler(async () =>
-  toNews(await fetchCsv("925126147")),
+export const getTestimonials = createServerFn({ method: "GET" }).handler(async () =>
+  toTestimonials(await fetchCsv("533034055")),
 );
 
 export const getStats = createServerFn({ method: "GET" }).handler(async () =>
