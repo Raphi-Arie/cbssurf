@@ -1,8 +1,14 @@
 # Site updates
-- [ ] Stats CSV parsing, animation and date rules with tests
-- [ ] Navigation, contact and Stories
-- [ ] Home stats and archive teaser
-- [ ] Past trips archive, photo wall and lightbox
-- [ ] Past trip detail presentation
-- [ ] How it works and About pages
-- [ ] Verify page flows and mobile layouts
+- [x] Stats CSV parsing, animation and date rules with tests
+- [x] Navigation, contact and Stories
+- [x] Home stats and archive teaser
+- [x] Past trips archive, photo wall and lightbox
+- [x] Past trip detail presentation
+- [x] How it works and About pages
+- [x] Verify live Trips, empty archive, and the WhatsApp request flow
+- [x] Verify Home and Stories after all CSV tabs became available again
+- [ ] Populated archive visual verification blocked: no past trips are currently in the published sheet; photo browsing is covered by tests.
+- [x] Verify live stats, FAQ, contact and phone layout
+- [x] Check the newly supplied Trips publishing link and rerun content checks.
+- [x] Verify preview errors: fresh browser loads show no React crash or Home 500; the open preview needs a hard reload after dependency optimization.
+- [x] Verify the full published-sheet link supplied during crash checks; all CSV tabs respond successfully.

@@ -31,3 +31,5 @@ use the editor.
 
 - Site content (trips, news) comes from published Google Sheet CSVs fetched per request in src/lib/sheets.functions.ts; business rules live as pure functions in src/lib/sheets.ts with tests — keeps content editable without code changes.
 - Trip parsing preserves explicit IDs and derives missing IDs from title and start date so incomplete sheet identifiers cannot produce links back to the trip list.
+- Fetch stats alongside content through the existing server CSV boundary; use shared client-safe parsing and presentation helpers so all pages follow the same content rules.
+- Keep Stories on its own content route and redirect the former News route; archive photo shuffling and stats animations run after hydration to preserve SSR consistency.
