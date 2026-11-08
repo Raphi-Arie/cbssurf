@@ -1,2 +1,0 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
-export const Route = createFileRoute("/news")({ beforeLoad: () => { throw redirect({ to: "/stories" }); }, head: () => ({ meta: [{ title: "Stories — CBS Surf" }, { name: "description", content: "Stories from the CBS Surf community." }, { property: "og:title", content: "Stories — CBS Surf" }, { property: "og:description", content: "Stories from the CBS Surf community." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }) });

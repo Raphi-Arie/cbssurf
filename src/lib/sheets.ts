@@ -20,11 +20,12 @@ export interface Trip {
   gallery: string[];
 }
 
-export interface NewsItem {
-  title: string;
-  date: string;
-  text: string;
-  image_url: string;
+export interface Testimonial {
+  order: number;
+  name: string;
+  trip: string;
+  quote: string;
+  photo_url: string;
 }
 
 export function parseCsv(text: string): Record<string, string>[] {
@@ -107,11 +108,11 @@ export function toTrips(rows: Record<string, string>[]): Trip[] {
   }));
 }
 
-export function toNews(rows: Record<string, string>[]): NewsItem[] {
+export function toTestimonials(rows: Record<string, string>[]): Testimonial[] {
   return rows
     .filter(isVisible)
-    .map((r) => ({ title: g(r, "title"), date: g(r, "date"), text: g(r, "text"), image_url: cloudinary(g(r, "image_url")) }))
-    .sort((a, b) => b.date.localeCompare(a.date));
+    .map((r) => ({ order: Number(g(r, "order")) || 0, name: g(r, "name"), trip: g(r, "trip"), quote: g(r, "quote"), photo_url: cloudinary(g(r, "photo_url")) }))
+    .sort((a, b) => a.order - b.order);
 }
 
 export function todayIso(now = new Date()): string {
