@@ -7,3 +7,4 @@
 - [x] How it works and About pages
 - [ ] Live Home, Trips, Stories, archive and request verification blocked: Google returns 401 for the existing Trips and News CSV tabs; owner must republish them.
 - [x] Verify live stats, FAQ, contact and phone layout
+- [ ] Check the newly supplied Trips publishing link and rerun content checks.
