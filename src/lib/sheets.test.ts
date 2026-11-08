@@ -10,6 +10,18 @@ d,Old,2025-01-01,2025-01-07,open,yes,,`;
 const trips = toTrips(parseCsv(csv));
 
 describe("sheet rules", () => {
+  it("generates a usable trip identifier when the sheet's id header is missing", () => {
+    const rows = parseCsv("´,title,start_date,visible\n,Fuerteventura,2027-01-31,yes\nmorocco-apr27,Morocco,2027-04-17,yes");
+    expect(toTrips(rows).map((trip) => trip.id)).toEqual([
+      "fuerteventura-2027-01-31", "morocco-2027-04-17",
+    ]);
+  });
+  it("generates a trip identifier for a blank id without changing explicit ids", () => {
+    const rows = parseCsv("id,title,start_date,visible\n,Fuerteventura,2027-01-31,yes\nmorocco-apr27,Morocco,2027-04-17,yes");
+    expect(toTrips(rows).map((trip) => trip.id)).toEqual([
+      "fuerteventura-2027-01-31", "morocco-apr27",
+    ]);
+  });
   it("only shows visible = yes", () => expect(trips.map((t) => t.id)).not.toContain("c"));
   it("sorts upcoming by start_date and moves ended trips to past", () => {
     const { upcoming, past } = splitTrips(trips, "2026-11-07");
