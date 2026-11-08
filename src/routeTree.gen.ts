@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as PastTripsRouteImport } from './routes/past-trips'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as TripsIndexRouteImport } from './routes/trips.index'
 import { Route as TripsIdRouteImport } from './routes/trips.$id'
 
@@ -36,6 +37,11 @@ const PastTripsRoute = PastTripsRouteImport.update({
   path: '/past-trips',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TripsIndexRoute = TripsIndexRouteImport.update({
   id: '/trips/',
   path: '/trips/',
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/how-it-works': typeof HowItWorksRoute
   '/past-trips': typeof PastTripsRoute
+  '/privacy': typeof PrivacyRoute
   '/trips/$id': typeof TripsIdRoute
   '/trips/': typeof TripsIndexRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/how-it-works': typeof HowItWorksRoute
   '/past-trips': typeof PastTripsRoute
+  '/privacy': typeof PrivacyRoute
   '/trips/$id': typeof TripsIdRoute
   '/trips': typeof TripsIndexRoute
 }
@@ -69,21 +77,36 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/how-it-works': typeof HowItWorksRoute
   '/past-trips': typeof PastTripsRoute
+  '/privacy': typeof PrivacyRoute
   '/trips/$id': typeof TripsIdRoute
   '/trips/': typeof TripsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/about' | '/how-it-works' | '/past-trips' | '/trips/$id' | '/trips/'
+    | '/'
+    | '/about'
+    | '/how-it-works'
+    | '/past-trips'
+    | '/privacy'
+    | '/trips/$id'
+    | '/trips/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/how-it-works' | '/past-trips' | '/trips/$id' | '/trips'
+  to:
+    | '/'
+    | '/about'
+    | '/how-it-works'
+    | '/past-trips'
+    | '/privacy'
+    | '/trips/$id'
+    | '/trips'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/how-it-works'
     | '/past-trips'
+    | '/privacy'
     | '/trips/$id'
     | '/trips/'
   fileRoutesById: FileRoutesById
@@ -93,6 +116,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   HowItWorksRoute: typeof HowItWorksRoute
   PastTripsRoute: typeof PastTripsRoute
+  PrivacyRoute: typeof PrivacyRoute
   TripsIdRoute: typeof TripsIdRoute
   TripsIndexRoute: typeof TripsIndexRoute
 }
@@ -127,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PastTripsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/trips/': {
       id: '/trips/'
       path: '/trips'
@@ -149,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   HowItWorksRoute: HowItWorksRoute,
   PastTripsRoute: PastTripsRoute,
+  PrivacyRoute: PrivacyRoute,
   TripsIdRoute: TripsIdRoute,
   TripsIndexRoute: TripsIndexRoute,
 }

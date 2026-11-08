@@ -133,7 +133,7 @@ export function canRequest(trip: Trip, today: string): boolean {
 
 export function whatsappLink(trip: Trip, name: string, people: number): string {
   const dates = formatDateRange(trip.start_date, trip.end_date);
-  const msg = `Hi Jonas! I'm ${name} and I'd like to join the ${trip.title} trip (${dates}) with ${people} ${people === 1 ? "person" : "people"}.`;
+  const msg = `Hi CBS Surf! I'm ${name} and I'd like to join the ${trip.title} trip (${dates}) with ${people} ${people === 1 ? "person" : "people"}.`;
   return `https://wa.me/4915735462749?text=${encodeURIComponent(msg)}`;
 }
 
@@ -157,7 +157,25 @@ export function formatMonth(iso: string): string {
 export function formatDateRange(start: string, end: string): string {
   if (!start || !end) return formatDate(start || end);
   const a = formatDate(start), b = formatDate(end);
-  return `${start.slice(0, 4) === end.slice(0, 4) ? a.replace(/ \d{4}$/, "") : a} – ${b}`;
+  const sameYear = start.slice(0, 4) === end.slice(0, 4);
+  if (sameYear && start.slice(5, 7) === end.slice(5, 7)) return `${a.replace(/ [A-Za-z]+ \d{4}$/, "")}–${b}`;
+  return `${sameYear ? a.replace(/ \d{4}$/, "") : a} – ${b}`;
+}
+export function formatMonthRange(start: string, end: string): string {
+  if (!start || !end || start.slice(0, 7) === end.slice(0, 7)) return formatMonth(start || end);
+  const a = new Date(start + "T00:00:00Z"), b = new Date(end + "T00:00:00Z");
+  if (isNaN(a.getTime()) || isNaN(b.getTime())) return formatMonth(start);
+  const sameYear = start.slice(0, 4) === end.slice(0, 4);
+  const opts: Intl.DateTimeFormatOptions = { month: "short", timeZone: "UTC" };
+  const ma = a.toLocaleDateString("en-GB", opts);
+  const mb = b.toLocaleDateString("en-GB", sameYear ? opts : { ...opts, year: "numeric" });
+  return `${ma} – ${mb}${sameYear ? " " + start.slice(0, 4) : ""}`;
+}
+export function splitParagraphs(text: string): string[] {
+  return text.split(/\r?\n\s*\r?\n/).map((p) => p.replace(/\r?\n/g, " ").trim()).filter(Boolean);
+}
+export function includedItems(text: string): string[] {
+  return text.split(",").map((item) => item.trim()).filter(Boolean);
 }
 export interface TripPhoto { src: string; trip: string }
 export function pastPhotos(trips: Trip[]): TripPhoto[] {
