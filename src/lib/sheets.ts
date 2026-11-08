@@ -140,3 +140,24 @@ export function formatDate(iso: string): string {
   if (isNaN(d.getTime())) return iso;
   return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 }
+
+export interface Stat { order: number; number: string; label: string; note: string; show_on_home: boolean }
+export function toStats(rows: Record<string, string>[]): Stat[] {
+  return rows.map((r) => ({ order: Number(g(r, "order")) || 0, number: g(r, "number"), label: g(r, "label"), note: g(r, "note"), show_on_home: g(r, "show_on_home").toLowerCase() === "yes" })).sort((a, b) => a.order - b.order);
+}
+export function statTarget(value: string): number | null {
+  return /^\d+\+?$/.test(value) ? Number(value.replace(/\+$/, "")) : null;
+}
+export function formatMonth(iso: string): string {
+  const d = new Date(iso + "T00:00:00Z");
+  return isNaN(d.getTime()) ? iso : d.toLocaleDateString("en-GB", { month: "long", year: "numeric", timeZone: "UTC" });
+}
+export function formatDateRange(start: string, end: string): string {
+  if (!start || !end) return formatDate(start || end);
+  const a = formatDate(start), b = formatDate(end);
+  return `${start.slice(0, 4) === end.slice(0, 4) ? a.replace(/ \d{4}$/, "") : a} – ${b}`;
+}
+export interface TripPhoto { src: string; trip: string }
+export function pastPhotos(trips: Trip[]): TripPhoto[] {
+  return trips.flatMap((trip) => trip.gallery.map((src) => ({ src, trip: trip.title })));
+}

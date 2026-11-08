@@ -1,5 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import hero from "@/assets/hero-surf.jpg";
+import { getStats } from "@/lib/sheets.functions";
+import { StatsGrid } from "@/components/stats";
+import { Button } from "@/components/ui/button";
+import { LoadError } from "@/components/site";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -12,22 +16,20 @@ export const Route = createFileRoute("/about")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
+  loader: () => getStats(),
   component: About,
+  errorComponent: ({ error }) => <LoadError error={error} />,
 });
 
 function About() {
+  const stats = Route.useLoaderData();
   return (
-    <div className="mx-auto max-w-6xl px-5 pt-14">
-      <h1 className="text-5xl font-extrabold md:text-6xl">About us</h1>
-      <div className="mt-10 grid items-center gap-10 md:grid-cols-2">
-        <img src={hero} alt="CBS Surf crew on the beach" loading="lazy" className="aspect-[4/3] w-full rounded-3xl object-cover shadow-soft" />
-        <div className="space-y-5 text-lg text-foreground/85">
-          <p>CBS Surf is a community of people who love the ocean, sunshine and good company. We organize surf trips where beginners and experienced surfers travel together.</p>
-          <p>We take care of the planning — accommodation, coaching, boards and the best spots — so you can focus on catching waves and making friends.</p>
-          <p>No pressure, no ego. Just salty hair, sunsets and a crew that feels like family.</p>
-          <Link to="/trips" className="inline-flex rounded-full bg-accent px-6 py-3 font-bold text-accent-foreground">Join a trip</Link>
-        </div>
-      </div>
-    </div>
+    <>
+      <section className="relative flex min-h-[60vh] items-end"><img src={hero} alt="Surf friends on the beach" className="absolute inset-0 h-full w-full object-cover" /><div className="absolute inset-0 bg-hero-overlay" /><div className="relative mx-auto w-full max-w-6xl px-5 pb-12 text-primary-foreground"><h1 className="text-5xl font-extrabold md:text-6xl">We are CBS Surf</h1></div></section>
+      <section className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-16 md:grid-cols-2"><div><h2 className="text-4xl font-extrabold">Our story</h2><p className="mt-5 text-lg leading-relaxed text-foreground/85">It starts with a love for the ocean, and grows with every person who joins us. CBS Surf brings people together for waves, sunshine and the kind of moments you talk about long after coming home.</p><p className="mt-4 text-lg text-foreground/85">From the first wave to the last sunset, it's the people who make each trip a story worth sharing.</p></div><img src={hero} alt="Friends heading into the surf" className="aspect-[4/3] w-full rounded-3xl object-cover" /></section>
+      <section className="bg-secondary/50 py-16"><div className="mx-auto max-w-6xl px-5"><h2 className="text-4xl font-extrabold">CBS Surf in numbers</h2><p className="mb-10 mt-3 text-lg text-muted-foreground">Some numbers we're proud of (and some we're not)</p><StatsGrid stats={stats} /></div></section>
+      <section className="mx-auto max-w-6xl px-5 py-16"><h2 className="mb-10 text-4xl font-extrabold">The team</h2><div className="grid gap-8 sm:grid-cols-3">{[{ name: "Jonas", role: "Trip organiser", intro: "Your first hello before the next adventure.", initials: "J" }, { name: "Team member", role: "Community", intro: "Good people make great trips.", initials: "C" }, { name: "Team member", role: "Surf crew", intro: "Always ready for the next wave.", initials: "S" }].map((person, i) => <article key={i} className="rounded-3xl bg-card p-6 text-center shadow-soft"><div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full bg-secondary font-display text-5xl font-bold text-primary" role="img" aria-label={`${person.name} photo placeholder`}>{person.initials}</div><h3 className="mt-6 text-2xl font-bold">{person.name}</h3><p className="mt-1 font-semibold text-accent">{person.role}</p><p className="mt-3 text-muted-foreground">{person.intro}</p></article>)}</div></section>
+      <section className="border-t border-border px-5 py-12 text-center"><h2 className="text-3xl font-extrabold">Want to be part of the next story?</h2><Button asChild className="mt-6 rounded-full bg-accent text-accent-foreground"><Link to="/trips">Explore trips</Link></Button></section>
+    </>
   );
 }

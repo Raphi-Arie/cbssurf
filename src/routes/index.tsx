@@ -1,8 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import hero from "@/assets/hero-surf.jpg";
-import { getNews, getTrips } from "@/lib/sheets.functions";
-import { splitTrips, todayIso } from "@/lib/sheets";
+import { getNews, getTrips, getStats } from "@/lib/sheets.functions";
+import { splitTrips, todayIso, pastPhotos } from "@/lib/sheets";
+import { StatsGrid } from "@/components/stats";
+import { Button } from "@/components/ui/button";
 import { LoadError, NewsCard, TripCard } from "@/components/site";
 
 export const Route = createFileRoute("/")({
@@ -17,8 +19,9 @@ export const Route = createFileRoute("/")({
     ],
   }),
   loader: async () => {
-    const [trips, news] = await Promise.all([getTrips(), getNews()]);
-    return { upcoming: splitTrips(trips, todayIso()).upcoming.slice(0, 3), news: news.slice(0, 3) };
+    const [trips, news, stats] = await Promise.all([getTrips(), getNews(), getStats()]);
+    const { upcoming, past } = splitTrips(trips, todayIso());
+    return { upcoming: upcoming.slice(0, 3), news: news.slice(0, 3), stats: stats.filter((s) => s.show_on_home), photos: pastPhotos(past).slice(0, 8) };
   },
   component: Home,
   errorComponent: ({ error }) => <LoadError error={error} />,
@@ -26,7 +29,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
-  const { upcoming, news } = Route.useLoaderData();
+  const { upcoming, news, stats, photos } = Route.useLoaderData();
   return (
     <>
       <section className="relative flex min-h-[88vh] items-end overflow-hidden">
@@ -42,6 +45,8 @@ function Home() {
         </div>
       </section>
 
+      {stats.length > 0 && <section className="border-b border-border bg-secondary/50 py-12"><div className="mx-auto max-w-6xl px-5"><StatsGrid stats={stats} /><div className="mt-8 text-center"><Link to="/about" className="text-sm font-semibold text-primary">More about us →</Link></div></div></section>}
+
       <section className="mx-auto max-w-6xl px-5 pt-20">
         <SectionHead title="Upcoming trips" to="/trips" />
         {upcoming.length ? (
@@ -51,9 +56,11 @@ function Home() {
         )}
       </section>
 
+      <section className="mx-auto max-w-6xl px-5 pt-20"><h2 className="mb-8 text-4xl font-extrabold">Past trips</h2>{photos.length > 0 && <div className="mb-8 flex gap-3 overflow-x-auto pb-2">{photos.map((photo, i) => <img key={i} src={photo.src} alt={`${photo.trip} impression`} loading="lazy" className="h-48 w-48 shrink-0 rounded-lg object-cover" />)}</div>}<Button asChild className="rounded-full bg-accent text-accent-foreground"><Link to="/past-trips">Explore past trips <ArrowRight /></Link></Button></section>
+
       {news.length > 0 && (
         <section className="mx-auto max-w-6xl px-5 pt-20">
-          <SectionHead title="Latest news" to="/news" />
+          <SectionHead title="Latest stories" to="/stories" />
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">{news.map((n, i) => <NewsCard key={i} item={n} />)}</div>
         </section>
       )}
@@ -61,7 +68,7 @@ function Home() {
   );
 }
 
-function SectionHead({ title, to }: { title: string; to: "/trips" | "/news" }) {
+function SectionHead({ title, to }: { title: string; to: "/trips" | "/stories" }) {
   return (
     <div className="mb-8 flex items-end justify-between">
       <h2 className="text-4xl font-extrabold md:text-5xl">{title}</h2>

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { getTrips } from "@/lib/sheets.functions";
 import { splitTrips, todayIso } from "@/lib/sheets";
 import { LoadError, TripCard } from "@/components/site";
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/trips/")({
 });
 
 function Trips() {
-  const { upcoming, past } = Route.useLoaderData();
+  const { upcoming } = Route.useLoaderData();
   return (
     <div className="mx-auto max-w-6xl px-5 pt-14">
       <h1 className="text-5xl font-extrabold md:text-6xl">Our trips</h1>
@@ -30,14 +30,7 @@ function Trips() {
         {upcoming.map((t) => <TripCard key={t.id} trip={t} />)}
       </div>
       {upcoming.length === 0 && <p className="mt-6 text-muted-foreground">New trips coming soon.</p>}
-      {past.length > 0 && (
-        <>
-          <h2 className="mt-20 text-3xl font-extrabold">Past trips</h2>
-          <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {past.map((t) => <TripCard key={t.id} trip={t} past />)}
-          </div>
-        </>
-      )}
+      <Link to="/past-trips" className="mt-10 inline-block font-semibold text-primary">See our past trips →</Link>
     </div>
   );
 }
