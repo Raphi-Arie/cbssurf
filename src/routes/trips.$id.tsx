@@ -44,13 +44,13 @@ function TripPage() {
   const cover = trip.image_url || trip.gallery[0];
   return (
     <>
-      <section className="relative flex min-h-[60vh] items-end overflow-hidden">
+      <section className="relative flex min-h-[50vh] items-end overflow-hidden md:min-h-[60vh]">
         {cover && <img src={cover} alt={trip.title} className="absolute inset-0 h-full w-full object-cover" />}
         <div className="absolute inset-0 bg-hero-overlay" />
         <div className="relative mx-auto w-full max-w-6xl px-5 pb-12 text-primary-foreground">
           <Link to="/trips" className="mb-6 inline-flex items-center gap-1 text-sm font-medium text-primary-foreground/90"><ArrowLeft className="h-4 w-4" /> All trips</Link>
           {!past && <div className="mb-3"><StatusBadge status={trip.status} /></div>}
-          <h1 className="text-5xl font-extrabold md:text-7xl">{trip.title}</h1>
+          <h1 className="text-4xl font-extrabold md:text-7xl">{trip.title}</h1>
           <p className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-primary-foreground/90">
             <span className="inline-flex items-center gap-1"><MapPin className="h-4 w-4" />{trip.location}</span>
             <span className="inline-flex items-center gap-1"><CalendarDays className="h-4 w-4" />{past ? formatMonth(trip.start_date) : formatDateRange(trip.start_date, trip.end_date)}</span>
@@ -58,19 +58,26 @@ function TripPage() {
         </div>
       </section>
 
-      <div className={`mx-auto grid max-w-6xl gap-12 px-5 pt-12 ${past ? "" : "lg:grid-cols-[1fr_380px]"}`}>
-        <div className="space-y-12">
+      <div className={`mx-auto grid max-w-6xl gap-10 px-5 pt-8 md:gap-12 md:pt-12 ${past ? "" : "lg:grid-cols-[1fr_380px]"}`}>
+        <div className="space-y-10 md:space-y-12">
           {trip.description && <p className="text-lg leading-relaxed text-foreground/85">{trip.description}</p>}
           {trip.program.length > 0 && (
             <section>
-              <h2 className="text-3xl font-extrabold">Program</h2>
-              <ol className="mt-6 space-y-3">
+              <h2 className="text-2xl font-extrabold md:text-3xl">Program</h2>
+              <ol className="mt-4 space-y-2 md:mt-6 md:space-y-3">
                 {trip.program.map((line, i) => {
                   const m = line.match(/^(Day[^:]*):\s*(.*)$/i);
+                  const label = m ? m[1]! : `Day ${i + 1}`;
+                  const dm = label.match(/^(Day\s*\d+)\s*\(([^)]*)\)\s*$/i);
                   return (
-                    <li key={i} className="flex gap-4 rounded-2xl bg-card p-5 shadow-soft">
-                      <span className="shrink-0 rounded-full bg-sun px-3 py-1 text-sm font-bold text-sun-foreground">{m ? m[1] : `Day ${i + 1}`}</span>
-                      <span className="pt-0.5">{m ? m[2] : line}</span>
+                    <li key={i} className="rounded-2xl bg-card p-4 shadow-soft md:p-5">
+                      <div className="flex flex-col gap-2 md:flex-row md:items-start md:gap-4">
+                        <div className="flex items-baseline gap-2 self-start md:w-32 md:shrink-0">
+                          <span className="shrink-0 rounded-full bg-sun px-3 py-1 text-xs font-bold text-sun-foreground md:text-sm">{dm ? dm[1] : label}</span>
+                          {dm && <span className="text-xs text-muted-foreground">{dm[2]}</span>}
+                        </div>
+                        <span className="text-sm leading-relaxed md:pt-0.5 md:text-base">{m ? m[2] : line}</span>
+                      </div>
                     </li>
                   );
                 })}
@@ -79,7 +86,7 @@ function TripPage() {
           )}
           {trip.included && (
             <section>
-              <h2 className="text-3xl font-extrabold">What's included</h2>
+              <h2 className="text-2xl font-extrabold md:text-3xl">What's included</h2>
               <p className="mt-4 text-lg text-foreground/85">{trip.included}</p>
             </section>
           )}
@@ -88,7 +95,7 @@ function TripPage() {
           )}
           {trip.gallery.length > 0 && (
             <section>
-              <h2 className="text-3xl font-extrabold">Gallery</h2>
+              <h2 className="text-2xl font-extrabold md:text-3xl">Gallery</h2>
               <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3">
                 {trip.gallery.map((src, i) => (
                   <a key={i} href={src} target="_blank" rel="noreferrer" className={`overflow-hidden rounded-2xl ${i === 0 ? "col-span-2 row-span-2" : ""}`}>

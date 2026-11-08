@@ -23,8 +23,8 @@ export const Route = createFileRoute("/trips/")({
 function Trips() {
   const { upcoming } = Route.useLoaderData();
   return (
-    <div className="mx-auto max-w-6xl px-5 pt-14">
-      <h1 className="text-5xl font-extrabold md:text-6xl">Our trips</h1>
+    <div className="mx-auto max-w-6xl px-5 pt-10 md:pt-14">
+      <h1 className="text-4xl font-extrabold md:text-6xl">Our trips</h1>
       <p className="mt-3 max-w-xl text-lg text-muted-foreground">Pick your wave. Every trip is planned for good surf, good food and good company.</p>
       <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {upcoming.map((t) => <TripCard key={t.id} trip={t} />)}
