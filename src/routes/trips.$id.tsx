@@ -2,7 +2,8 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowLeft, CalendarDays, MapPin, MessageCircle } from "lucide-react";
 import { getTrips } from "@/lib/sheets.functions";
-import { canRequest, formatDate, todayIso, whatsappLink, type Trip } from "@/lib/sheets";
+import { canRequest, formatDateRange, formatMonth, todayIso, whatsappLink, type Trip } from "@/lib/sheets";
+import { Button } from "@/components/ui/button";
 import { LoadError, StatusBadge } from "@/components/site";
 
 export const Route = createFileRoute("/trips/$id")({
@@ -23,7 +24,7 @@ export const Route = createFileRoute("/trips/$id")({
         { property: "og:description", content: desc },
         { property: "og:type", content: "article" },
         { name: "twitter:card", content: "summary_large_image" },
-        ...(t?.image_url ? [{ property: "og:image", content: t.image_url }, { name: "twitter:image", content: t.image_url }] : []),
+        ...(t?.image_url?.startsWith("https://") ? [{ property: "og:image", content: t.image_url }, { name: "twitter:image", content: t.image_url }] : []),
       ],
     };
   },
@@ -39,23 +40,24 @@ export const Route = createFileRoute("/trips/$id")({
 
 function TripPage() {
   const { trip, requestable, past } = Route.useLoaderData();
+  const cover = trip.image_url || trip.gallery[0];
   return (
     <>
       <section className="relative flex min-h-[60vh] items-end overflow-hidden">
-        {trip.image_url && <img src={trip.image_url} alt={trip.title} className="absolute inset-0 h-full w-full object-cover" />}
+        {cover && <img src={cover} alt={trip.title} className="absolute inset-0 h-full w-full object-cover" />}
         <div className="absolute inset-0 bg-hero-overlay" />
         <div className="relative mx-auto w-full max-w-6xl px-5 pb-12 text-primary-foreground">
           <Link to="/trips" className="mb-6 inline-flex items-center gap-1 text-sm font-medium text-primary-foreground/90"><ArrowLeft className="h-4 w-4" /> All trips</Link>
-          <div className="mb-3">{past ? <span className="rounded-full bg-muted px-3 py-1 text-xs font-bold uppercase text-muted-foreground">Past trip</span> : <StatusBadge status={trip.status} />}</div>
+          {!past && <div className="mb-3"><StatusBadge status={trip.status} /></div>}
           <h1 className="text-5xl font-extrabold md:text-7xl">{trip.title}</h1>
           <p className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-primary-foreground/90">
             <span className="inline-flex items-center gap-1"><MapPin className="h-4 w-4" />{trip.location}</span>
-            <span className="inline-flex items-center gap-1"><CalendarDays className="h-4 w-4" />{formatDate(trip.start_date)} – {formatDate(trip.end_date)}</span>
+            <span className="inline-flex items-center gap-1"><CalendarDays className="h-4 w-4" />{past ? formatMonth(trip.start_date) : formatDateRange(trip.start_date, trip.end_date)}</span>
           </p>
         </div>
       </section>
 
-      <div className="mx-auto grid max-w-6xl gap-12 px-5 pt-12 lg:grid-cols-[1fr_380px]">
+      <div className={`mx-auto grid max-w-6xl gap-12 px-5 pt-12 ${past ? "" : "lg:grid-cols-[1fr_380px]"}`}>
         <div className="space-y-12">
           {trip.description && <p className="text-lg leading-relaxed text-foreground/85">{trip.description}</p>}
           {trip.program.length > 0 && (
@@ -96,7 +98,7 @@ function TripPage() {
             </section>
           )}
         </div>
-        <aside className="lg:sticky lg:top-24 lg:self-start">
+        {!past && <aside className="lg:sticky lg:top-24 lg:self-start">
           <div className="rounded-3xl bg-card p-6 shadow-soft">
             {trip.price && <p className="font-display text-3xl font-extrabold text-primary">{trip.price}</p>}
             {trip.status_note && <p className="mt-2 font-semibold text-accent">{trip.status_note}</p>}
@@ -106,7 +108,8 @@ function TripPage() {
               </p>
             )}
           </div>
-        </aside>
+        </aside>}
+        {past && <section className="border-t border-border py-10 text-center"><h2 className="text-3xl font-bold">Want to join the next one?</h2><Button asChild className="mt-5 rounded-full bg-accent text-accent-foreground"><Link to="/trips">Explore upcoming trips</Link></Button></section>}
       </div>
     </>
   );
@@ -133,9 +136,9 @@ function RequestForm({ trip }: { trip: Trip }) {
         <span className="text-sm font-semibold">Number of people</span>
         <input type="number" min={1} value={people} onChange={(e) => setPeople(e.target.value)} required className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-3 outline-none focus:ring-2 focus:ring-ring" />
       </label>
-      <button disabled={!valid} className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-4 font-bold text-accent-foreground transition hover:scale-[1.02] disabled:opacity-50">
+      <Button disabled={!valid} className="inline-flex h-auto w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-4 font-bold text-accent-foreground transition hover:scale-[1.02] disabled:opacity-50">
         <MessageCircle className="h-5 w-5" /> Request via WhatsApp
-      </button>
+      </Button>
     </form>
   );
 }
