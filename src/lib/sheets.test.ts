@@ -61,6 +61,14 @@ describe("sheet rules", () => {
     expect(pastPhotos(trips).map((p) => p.trip)).toEqual(["Alpha", "Alpha"]);
     expect(pastPhotos(trips)[0]?.src).toContain("a.jpg");
   });
+  it("mixes archive photos evenly: at most 4 per trip first, then the rest", () => {
+    const make = (id: string, count: number) => ({ ...trips[0]!, id, title: id, gallery: Array.from({ length: count }, (_, i) => `https://example.com/${id}-${i}.jpg`) });
+    const mixed = pastPhotos([make("big", 8), make("small", 2)]);
+    expect(mixed).toHaveLength(10);
+    expect(mixed.slice(0, 6).map((p) => p.trip)).toEqual(["big", "small", "big", "small", "big", "big"]);
+    expect(mixed.slice(6).every((p) => p.trip === "big")).toBe(true);
+    expect(mixed.filter((p) => p.trip === "big")).toHaveLength(8);
+  });
   it("generates a usable trip identifier when the sheet's id header is missing", () => {
     const rows = parseCsv("´,title,start_date,visible\n,Fuerteventura,2027-01-31,yes\nmorocco-apr27,Morocco,2027-04-17,yes");
     expect(toTrips(rows).map((trip) => trip.id)).toEqual([
