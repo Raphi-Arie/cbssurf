@@ -83,7 +83,13 @@ function normalizeStatus(s: string): TripStatus {
 
 export function toTrips(rows: Record<string, string>[]): Trip[] {
   return rows.filter(isVisible).map((r) => ({
-    id: g(r, "id"),
+    id: g(r, "id").trim() || [g(r, "title"), g(r, "start_date")]
+      .join("-")
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, ""),
     title: g(r, "title"),
     location: g(r, "location"),
     start_date: g(r, "start_date"),
