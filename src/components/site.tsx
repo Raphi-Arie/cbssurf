@@ -35,13 +35,21 @@ export function Header() {
         </Button>
       </div>
       {open && (
-        <nav className="flex flex-col gap-1 border-t border-border px-5 py-3 lg:hidden">
-          {nav.map((n) => (
-            <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className="py-2 text-lg font-medium">
-              {n.label}
-            </Link>
-          ))}
-          <Button asChild className="mt-2 bg-accent text-accent-foreground"><a href={contactUrl} target="_blank" rel="noopener noreferrer">Contact us</a></Button>
+        <nav className="fixed inset-0 z-50 flex flex-col bg-background px-5 pb-8 pt-4 lg:hidden">
+          <div className="flex items-center justify-between">
+            <span className="font-display text-2xl font-extrabold text-ocean-deep">CBS<span className="text-accent">.</span>surf</span>
+            <Button variant="ghost" size="icon" aria-label="Close menu" onClick={() => setOpen(false)}>
+              <X />
+            </Button>
+          </div>
+          <div className="mt-8 flex flex-col">
+            {nav.map((n) => (
+              <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className="border-b border-border py-4 text-2xl font-bold">
+                {n.label}
+              </Link>
+            ))}
+          </div>
+          <Button asChild className="mt-auto h-12 rounded-full bg-accent text-base font-bold text-accent-foreground"><a href={contactUrl} target="_blank" rel="noopener noreferrer"><MessageCircle />Contact us</a></Button>
         </nav>
       )}
     </header>
@@ -50,7 +58,7 @@ export function Header() {
 
 export function Footer() {
   return (
-    <footer className="mt-24 bg-ocean-deep text-primary-foreground">
+    <footer className="mt-16 bg-ocean-deep text-primary-foreground md:mt-24">
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-12 md:flex-row md:items-center md:justify-between">
         <div>
           <p className="font-display text-2xl font-extrabold">CBS<span className="text-sun">.</span>surf</p>
