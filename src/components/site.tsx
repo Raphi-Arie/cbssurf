@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Instagram, Menu, X, CalendarDays, MapPin, MessageCircle } from "lucide-react";
-import { formatDate, formatDateRange, formatMonth, type NewsItem, type Trip } from "@/lib/sheets";
+import { formatDateRange, formatMonth, type Trip } from "@/lib/sheets";
 
 import { Button } from "@/components/ui/button";
 
@@ -10,7 +10,6 @@ export const contactUrl = "https://wa.me/4915735462749?text=" + encodeURICompone
 const nav = [
   { to: "/trips", label: "Trips" },
   { to: "/past-trips", label: "Past trips" },
-  { to: "/stories", label: "Stories" },
   { to: "/how-it-works", label: "How it works" },
   { to: "/about", label: "About us" },
 ] as const;
@@ -95,19 +94,6 @@ export function TripCard({ trip, past = false }: { trip: Trip; past?: boolean })
         {!past && trip.price && <p className="mt-4 font-display text-lg font-bold text-primary">{trip.price}</p>}
       </div>
     </Link>
-  );
-}
-
-export function NewsCard({ item }: { item: NewsItem }) {
-  return (
-    <article className="overflow-hidden rounded-3xl bg-card shadow-soft">
-      {item.image_url && <img src={item.image_url} alt={item.title} loading="lazy" className="aspect-[16/10] w-full object-cover" />}
-      <div className="p-6">
-        <time className="text-xs font-semibold uppercase tracking-wider text-accent">{formatDate(item.date)}</time>
-        <h3 className="mt-2 text-xl font-bold">{item.title}</h3>
-        <p className="mt-2 text-foreground/80">{item.text}</p>
-      </div>
-    </article>
   );
 }
 

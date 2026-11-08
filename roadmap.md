@@ -1,4 +1,7 @@
 # Site updates
+- [ ] Remove Stories pages, navigation, Home section and News CSV loading
+- [ ] Connect published testimonials and add archive carousel with rule and interaction tests
+- [ ] Verify updated Home and archive on desktop and mobile
 - [x] Stats CSV parsing, animation and date rules with tests
 - [x] Navigation, contact and Stories
 - [x] Home stats and archive teaser
