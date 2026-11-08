@@ -1,8 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useState } from "react";
-import { ArrowLeft, CalendarDays, MapPin, MessageCircle } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowLeft, CalendarDays, Check, MapPin, MessageCircle } from "lucide-react";
 import { getTrips } from "@/lib/sheets.functions";
-import { canRequest, formatDateRange, formatMonth, todayIso, whatsappLink, type Trip } from "@/lib/sheets";
+import { canRequest, formatDateRange, formatMonthRange, includedItems, splitParagraphs, todayIso, whatsappLink, type Trip } from "@/lib/sheets";
 import { Button } from "@/components/ui/button";
 import { LoadError, StatusBadge } from "@/components/site";
 
@@ -53,14 +53,14 @@ function TripPage() {
           <h1 className="text-4xl font-extrabold md:text-7xl">{trip.title}</h1>
           <p className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-primary-foreground/90">
             <span className="inline-flex items-center gap-1"><MapPin className="h-4 w-4" />{trip.location}</span>
-            <span className="inline-flex items-center gap-1"><CalendarDays className="h-4 w-4" />{past ? formatMonth(trip.start_date) : formatDateRange(trip.start_date, trip.end_date)}</span>
+            <span className="inline-flex items-center gap-1"><CalendarDays className="h-4 w-4" />{past ? formatMonthRange(trip.start_date, trip.end_date) : formatDateRange(trip.start_date, trip.end_date)}</span>
           </p>
         </div>
       </section>
 
       <div className={`mx-auto grid max-w-6xl gap-10 px-5 pt-8 md:gap-12 md:pt-12 ${past ? "" : "lg:grid-cols-[1fr_380px]"}`}>
         <div className="space-y-10 md:space-y-12">
-          {trip.description && <p className="text-lg leading-relaxed text-foreground/85">{trip.description}</p>}
+          {trip.description && <div className="space-y-4">{splitParagraphs(trip.description).map((paragraph, i) => <p key={i} className="text-lg leading-relaxed text-foreground/85">{paragraph}</p>)}</div>}
           {trip.program.length > 0 && (
             <section>
               <h2 className="text-2xl font-extrabold md:text-3xl">Program</h2>
@@ -87,7 +87,18 @@ function TripPage() {
           {trip.included && (
             <section>
               <h2 className="text-2xl font-extrabold md:text-3xl">What's included</h2>
-              <p className="mt-4 text-lg text-foreground/85">{trip.included}</p>
+              {includedItems(trip.included).length > 1 ? (
+                <ul className="mt-4 space-y-2">
+                  {includedItems(trip.included).map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 text-lg text-foreground/85">
+                      <Check className="mt-1 h-5 w-5 shrink-0 text-primary" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-4 text-lg text-foreground/85">{trip.included}</p>
+              )}
             </section>
           )}
           {trip.camp_link && (
