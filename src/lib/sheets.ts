@@ -178,6 +178,19 @@ export function includedItems(text: string): string[] {
   return text.split(",").map((item) => item.trim()).filter(Boolean);
 }
 export interface TripPhoto { src: string; trip: string }
-export function pastPhotos(trips: Trip[]): TripPhoto[] {
-  return trips.flatMap((trip) => trip.gallery.map((src) => ({ src, trip: trip.title })));
+// Mix photos evenly across trips: round-robin up to 4 per trip first, then fill with the rest,
+// so no single trip dominates the archive wall.
+export function pastPhotos(trips: Trip[], perTripFirst = 4): TripPhoto[] {
+  const first: TripPhoto[] = [];
+  const rest: TripPhoto[] = [];
+  for (let round = 0; round < perTripFirst; round++) {
+    for (const trip of trips) {
+      const src = trip.gallery[round];
+      if (src) first.push({ src, trip: trip.title });
+    }
+  }
+  for (const trip of trips) {
+    for (const src of trip.gallery.slice(perTripFirst)) rest.push({ src, trip: trip.title });
+  }
+  return [...first, ...rest];
 }

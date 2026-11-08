@@ -32,4 +32,4 @@ use the editor.
 - Site content (trips, stats, testimonials) comes from published Google Sheet CSVs fetched per request in src/lib/sheets.functions.ts; business rules live as pure functions in src/lib/sheets.ts with tests — keeps content editable without code changes.
 - Trip parsing preserves explicit IDs and derives missing IDs from title and start date so incomplete sheet identifiers cannot produce links back to the trip list.
 - Fetch stats alongside content through the existing server CSV boundary; use shared client-safe parsing and presentation helpers so all pages follow the same content rules.
-- Archive photo shuffling, stats animations, and testimonial carousel timers run after hydration to preserve SSR consistency; keep carousel presentation separate from CSV parsing for testable interactions.
+- Archive photos are mixed deterministically in pastPhotos (round-robin, max 4 per trip first, then the rest) so the wall stays balanced and SSR-consistent; stats animations and testimonial carousel timers still run after hydration.

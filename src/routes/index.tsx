@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import hero from "@/assets/hero-surf.jpg";
 import { getTrips, getStats } from "@/lib/sheets.functions";
-import { splitTrips, todayIso, pastPhotos } from "@/lib/sheets";
+import { splitTrips, todayIso } from "@/lib/sheets";
 import { StatsGrid } from "@/components/stats";
 import { Button } from "@/components/ui/button";
 import { LoadError, TripCard } from "@/components/site";
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/")({
   loader: async () => {
     const [trips, stats] = await Promise.all([getTrips(), getStats()]);
     const { upcoming, past } = splitTrips(trips, todayIso());
-    return { upcoming: upcoming.slice(0, 3), stats: stats.filter((s) => s.show_on_home), photos: pastPhotos(past).slice(0, 8) };
+    return { upcoming: upcoming.slice(0, 3), past: past.slice(0, 3), stats: stats.filter((s) => s.show_on_home) };
   },
   component: Home,
   errorComponent: ({ error }) => <LoadError error={error} />,
@@ -29,7 +29,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
-  const { upcoming, stats, photos } = Route.useLoaderData();
+  const { upcoming, past, stats } = Route.useLoaderData();
   return (
     <>
       <section className="relative flex min-h-[68vh] items-end overflow-hidden md:min-h-[88vh]">
@@ -56,7 +56,11 @@ function Home() {
         )}
       </section>
 
-      <section className="mx-auto max-w-6xl px-5 pt-12 md:pt-20"><h2 className="mb-8 text-3xl font-extrabold md:text-4xl">Past trips</h2>{photos.length > 0 && <div className="mb-8 flex gap-3 overflow-x-auto pb-2">{photos.map((photo, i) => <img key={i} src={photo.src} alt={`${photo.trip} impression`} loading="lazy" className="h-48 w-48 shrink-0 rounded-lg object-cover" />)}</div>}<Button asChild className="rounded-full bg-accent text-accent-foreground"><Link to="/past-trips">Explore past trips <ArrowRight /></Link></Button></section>
+      {past.length > 0 && <section className="mx-auto max-w-6xl px-5 pt-12 md:pt-20">
+        <h2 className="mb-8 text-3xl font-extrabold md:text-4xl">Past trips</h2>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{past.map((t) => <TripCard key={t.id} trip={t} past compact />)}</div>
+        <div className="mt-8"><Button asChild className="rounded-full bg-accent text-accent-foreground"><Link to="/past-trips">Explore past trips <ArrowRight /></Link></Button></div>
+      </section>}
 
     </>
   );

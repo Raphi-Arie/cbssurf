@@ -1,18 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import type { TripPhoto } from "@/lib/sheets";
 
 export function PhotoWall({ photos }: { photos: TripPhoto[] }) {
-  const [items, setItems] = useState(photos);
+  // Photos arrive pre-mixed by pastPhotos (round-robin across trips); keep that order so the
+  // wall stays balanced and SSR-consistent.
+  const items = photos;
   const [limit, setLimit] = useState(24);
   const [active, setActive] = useState<number | null>(null);
-  useEffect(() => {
-    const shuffled = [...photos];
-    for (let i = shuffled.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const a = shuffled[i], b = shuffled[j]; if (a && b) { shuffled[i] = b; shuffled[j] = a; } }
-    setItems(shuffled);
-  }, [photos]);
   const move = (direction: number) => setActive((index) => index === null || !items.length ? null : (index + direction + items.length) % items.length);
   const photo = active === null ? undefined : items[active];
   const touchStart = useRef<{ x: number; y: number } | null>(null);
