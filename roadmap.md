@@ -10,3 +10,5 @@
 - [ ] Populated archive visual verification blocked: no past trips are currently in the published sheet; photo browsing is covered by tests.
 - [x] Verify live stats, FAQ, contact and phone layout
 - [x] Check the newly supplied Trips publishing link and rerun content checks.
+- [ ] Fix preview React dependency reload crash and verify current Home errors.
+- [ ] Verify the full published-sheet link supplied during crash checks.
