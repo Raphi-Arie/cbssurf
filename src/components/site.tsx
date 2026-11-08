@@ -2,8 +2,18 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Instagram, Menu, X, CalendarDays, MapPin, MessageCircle } from "lucide-react";
 import { formatDateRange, formatMonthRange, type Trip } from "@/lib/sheets";
+import logoAsset from "@/assets/cbs-logo.jpg.asset.json";
 
 import { Button } from "@/components/ui/button";
+
+export function Logo({ dark = false }: { dark?: boolean }) {
+  return (
+    <span className="inline-flex items-center gap-2.5">
+      <img src={logoAsset.url} alt="CBS Surf logo" className="h-10 w-10 shrink-0 rounded-full object-cover" />
+      <span className={`font-display text-xl font-extrabold tracking-tight ${dark ? "text-primary-foreground" : "text-foreground"}`}>CBS Surf</span>
+    </span>
+  );
+}
 
 export const contactUrl = "https://wa.me/4915735462749?text=" + encodeURIComponent("Hi CBS Surf! I have a question about your trips.");
 
@@ -20,8 +30,8 @@ export function Header() {
     <>
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
-        <Link to="/" className="font-display text-2xl font-extrabold text-ocean-deep">
-          CBS<span className="text-accent">.</span>surf
+        <Link to="/" aria-label="CBS Surf home">
+          <Logo />
         </Link>
         <nav className="hidden items-center gap-6 lg:flex">
           {nav.map((n) => (
@@ -39,7 +49,7 @@ export function Header() {
     {open && (
       <nav className="fixed inset-0 z-50 flex flex-col bg-background px-5 pb-8 pt-4 lg:hidden">
         <div className="flex items-center justify-between">
-          <span className="font-display text-2xl font-extrabold text-ocean-deep">CBS<span className="text-accent">.</span>surf</span>
+          <Logo />
           <Button variant="ghost" size="icon" aria-label="Close menu" onClick={() => setOpen(false)}>
             <X />
           </Button>
@@ -61,17 +71,35 @@ export function Header() {
 export function Footer() {
   return (
     <footer className="mt-16 bg-ocean-deep text-primary-foreground md:mt-24">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-12 md:flex-row md:items-center md:justify-between">
+      <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-[1.2fr_1fr_1fr] md:py-16">
         <div>
-          <p className="font-display text-2xl font-extrabold">CBS<span className="text-sun">.</span>surf</p>
-          <p className="mt-1 text-primary-foreground/70">Surf trips with friends. Salt, sun & good people.</p>
+          <Logo dark />
+          <p className="mt-4 max-w-xs text-primary-foreground/70">Surf trips with friends. Salt, sun & good people.</p>
+          <div className="mt-6 flex gap-3">
+            <a href={contactUrl} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-primary-foreground/10 transition hover:bg-primary-foreground/20">
+              <MessageCircle className="h-5 w-5" />
+            </a>
+            <a href="https://instagram.com/cbs.surf" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-primary-foreground/10 transition hover:bg-primary-foreground/20">
+              <Instagram className="h-5 w-5" />
+            </a>
+          </div>
         </div>
-        <div className="flex flex-wrap gap-3"><Button asChild variant="secondary"><a href={contactUrl} target="_blank" rel="noopener noreferrer"><MessageCircle /> WhatsApp</a></Button>
-        <a href="https://instagram.com/cbs.surf" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-primary-foreground/10 px-5 py-3 font-medium hover:bg-primary-foreground/20">
-          <Instagram className="h-5 w-5" /> @cbs.surf
-        </a>
-        <Link to="/privacy" className="inline-flex items-center rounded-full px-5 py-3 font-medium text-primary-foreground/70 hover:text-primary-foreground">Privacy</Link></div>
+        <nav aria-label="Footer">
+          <p className="text-sm font-bold uppercase tracking-wider text-primary-foreground/50">Explore</p>
+          <ul className="mt-4 space-y-2.5">
+            {nav.map((n) => (
+              <li key={n.to}><Link to={n.to} className="font-medium text-primary-foreground/80 transition hover:text-primary-foreground">{n.label}</Link></li>
+            ))}
+          </ul>
+        </nav>
+        <div>
+          <p className="text-sm font-bold uppercase tracking-wider text-primary-foreground/50">Legal</p>
+          <ul className="mt-4 space-y-2.5">
+            <li><Link to="/privacy" className="font-medium text-primary-foreground/80 transition hover:text-primary-foreground">Privacy</Link></li>
+          </ul>
+        </div>
       </div>
+      <div className="border-t border-primary-foreground/10 px-5 py-5 text-center text-sm text-primary-foreground/50">CBS Surf — chase waves, find your crew.</div>
     </footer>
   );
 }
@@ -79,10 +107,10 @@ export function Footer() {
 export function StatusBadge({ status }: { status: Trip["status"] }) {
   const cls =
     status === "open"
-      ? "bg-primary text-primary-foreground"
+      ? "bg-success text-success-foreground"
       : status === "sold out"
-        ? "bg-accent text-accent-foreground"
-        : "bg-sun text-sun-foreground";
+        ? "bg-danger text-danger-foreground"
+        : "bg-warning text-warning-foreground";
   return <span className={`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${cls}`}>{status}</span>;
 }
 
