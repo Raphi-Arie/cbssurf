@@ -22,7 +22,7 @@ export const Route = createFileRoute("/")({
   loader: async () => {
     const [trips, stats] = await Promise.all([getTrips(), getStats()]);
     const { upcoming, past } = splitTrips(trips, todayIso());
-    return { upcoming: upcoming.slice(0, 3), past: homePastTrips(past), stats: stats.filter((s) => s.show_on_home) };
+    return { upcoming: upcoming.slice(0, 3), past: homePastTrips(past), stats };
   },
   component: Home,
   errorComponent: ({ error }) => <LoadError error={error} />,
