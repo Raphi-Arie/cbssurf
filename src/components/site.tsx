@@ -119,7 +119,7 @@ export function TripCard({ trip, past = false, compact = false }: { trip: Trip; 
   return (
     <Link to="/trips/$id" params={{ id: trip.id }} className={`group overflow-hidden rounded-3xl bg-card shadow-soft transition hover:-translate-y-1 ${past ? "opacity-80" : ""}`}>
       <div className={`relative overflow-hidden ${compact ? "aspect-[16/9]" : "aspect-[4/3]"}`}>
-        {image ? <img src={image} alt={trip.title} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" /> : <div className="flex h-full items-center justify-center bg-muted p-6 text-center text-lg font-bold text-muted-foreground">{trip.location}</div>}
+        {image ? <img src={image} alt={trip.title} loading="lazy" className="h-full w-full object-cover transition duration-300 group-hover:scale-105" /> : <div className="flex h-full items-center justify-center bg-muted p-6 text-center text-lg font-bold text-muted-foreground">{trip.location}</div>}
         {!past && <div className="absolute left-4 top-4"><StatusBadge status={trip.status} /></div>}
       </div>
       <div className={compact ? "p-3 md:p-4" : "p-6"}>

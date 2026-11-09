@@ -1,4 +1,6 @@
 # Site updates
+- [x] Photo interaction: no raw-image links, subtle desktop hover zoom (1.05 / 300ms), trip cards still open their trip page
+- [x] Trip detail back link depends on the trip: past → Past trips, upcoming → All trips
 - [x] Match KPI reference everywhere without sand; limit smaller archive photos and Home past-trip previews; verify desktop/mobile
 - [x] Apply requested navy/ocean/sand palette only and verify desktop/mobile contrast and interactions
 - [x] Remove Stories pages, navigation, Home section and News CSV loading

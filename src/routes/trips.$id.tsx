@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, CalendarDays, Check, MapPin, MessageCircle } from "lucide-react";
 import { getTrips } from "@/lib/sheets.functions";
 import { canRequest, formatDateRange, formatMonthRange, includedItems, splitParagraphs, todayIso, whatsappLink, type Trip } from "@/lib/sheets";
+import { tripBackLink } from "@/lib/previews";
 import { Button } from "@/components/ui/button";
 import { LoadError, StatusBadge } from "@/components/site";
 
@@ -42,13 +43,14 @@ export const Route = createFileRoute("/trips/$id")({
 function TripPage() {
   const { trip, requestable, past } = Route.useLoaderData();
   const cover = trip.image_url || trip.gallery[0];
+  const back = tripBackLink(past);
   return (
     <>
       <section className="relative flex min-h-[50vh] items-end overflow-hidden md:min-h-[60vh]">
         {cover && <img src={cover} alt={trip.title} className="absolute inset-0 h-full w-full object-cover" />}
         <div className="absolute inset-0 bg-hero-overlay" />
         <div className="relative mx-auto w-full max-w-6xl px-5 pb-12 text-primary-foreground">
-          <Link to="/trips" className="mb-6 inline-flex items-center gap-1 text-sm font-medium text-primary-foreground/90"><ArrowLeft className="h-4 w-4" /> All trips</Link>
+          <Link to={back.to} className="mb-6 inline-flex items-center gap-1 text-sm font-medium text-primary-foreground/90"><ArrowLeft className="h-4 w-4" /> {back.label}</Link>
           {!past && <div className="mb-3"><StatusBadge status={trip.status} /></div>}
           <h1 className="text-4xl font-extrabold md:text-7xl">{trip.title}</h1>
           <p className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-primary-foreground/90">
@@ -109,9 +111,9 @@ function TripPage() {
               <h2 className="text-2xl font-extrabold md:text-3xl">Gallery</h2>
               <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3">
                 {trip.gallery.map((src, i) => (
-                  <a key={i} href={src} target="_blank" rel="noreferrer" className={`overflow-hidden rounded-2xl ${i === 0 ? "col-span-2 row-span-2" : ""}`}>
-                    <img src={src} alt={`${trip.title} photo ${i + 1}`} loading="lazy" className="h-full w-full object-cover transition hover:scale-105" />
-                  </a>
+                  <div key={i} className={`overflow-hidden rounded-2xl ${i === 0 ? "col-span-2 row-span-2" : ""}`}>
+                    <img src={src} alt={`${trip.title} photo ${i + 1}`} loading="lazy" className="h-full w-full object-cover transition duration-300 ease-out hover:scale-105" />
+                  </div>
                 ))}
               </div>
             </section>
