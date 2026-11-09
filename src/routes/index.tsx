@@ -39,13 +39,13 @@ function Home() {
           <p className="mb-4 inline-block rounded-full bg-sun px-4 py-1 text-sm font-bold text-sun-foreground">Surf trips · Community · Sunshine</p>
           <h1 className="max-w-3xl text-4xl font-extrabold leading-[0.95] md:text-7xl">Chase waves. Find your crew.</h1>
           <p className="mt-5 max-w-xl text-lg text-primary-foreground/90">We pack the boards, you bring the good vibes.</p>
-          <Link to="/trips" className="mt-8 inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 font-bold text-accent-foreground shadow-soft transition hover:scale-105">
+          <Link to="/trips" className="mt-8 inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 font-bold text-accent-foreground hover:bg-sand-hover shadow-soft transition hover:scale-105">
             See our trips <ArrowRight className="h-5 w-5" />
           </Link>
         </div>
       </section>
 
-      {stats.length > 0 && <section className="border-b border-border bg-secondary/50 py-12"><div className="mx-auto max-w-6xl px-5"><StatsGrid stats={stats} /><div className="mt-8 text-center"><Link to="/about" className="text-sm font-semibold text-primary">More about us →</Link></div></div></section>}
+      {stats.length > 0 && <section className="sand-highlight border-b border-border bg-accent py-12"><div className="mx-auto max-w-6xl px-5"><StatsGrid stats={stats} /><div className="mt-8 text-center"><Link to="/about" className="text-sm font-semibold text-primary">More about us →</Link></div></div></section>}
 
       <section className="mx-auto max-w-6xl px-5 pt-12 md:pt-20">
         <SectionHead title="Upcoming trips" to="/trips" />
@@ -59,7 +59,7 @@ function Home() {
       {past.length > 0 && <section className="mx-auto max-w-6xl px-5 pt-12 md:pt-20">
         <h2 className="mb-8 text-3xl font-extrabold md:text-4xl">Past trips</h2>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{past.map((t) => <TripCard key={t.id} trip={t} past compact />)}</div>
-        <div className="mt-8"><Button asChild className="rounded-full bg-accent text-accent-foreground"><Link to="/past-trips">Explore past trips <ArrowRight /></Link></Button></div>
+        <div className="mt-8"><Button asChild className="rounded-full bg-primary text-primary-foreground hover:bg-primary-hover"><Link to="/past-trips">Explore past trips <ArrowRight /></Link></Button></div>
       </section>}
 
     </>
@@ -70,7 +70,7 @@ function SectionHead({ title, to }: { title: string; to: "/trips" }) {
   return (
     <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
       <h2 className="text-3xl font-extrabold md:text-5xl">{title}</h2>
-      <Link to={to} className="inline-flex items-center gap-1 font-semibold text-primary">
+      <Link to={to} className="inline-flex items-center gap-1 font-semibold text-ocean">
         View all <ArrowRight className="h-4 w-4" />
       </Link>
     </div>

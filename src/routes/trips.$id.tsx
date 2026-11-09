@@ -34,7 +34,7 @@ export const Route = createFileRoute("/trips/$id")({
   notFoundComponent: () => (
     <div className="mx-auto max-w-xl px-5 py-24 text-center">
       <h1 className="text-3xl font-bold">Trip not found</h1>
-      <Link to="/trips" className="mt-4 inline-block font-semibold text-primary">See all trips</Link>
+      <Link to="/trips" className="mt-4 inline-block font-semibold text-ocean">See all trips</Link>
     </div>
   ),
 });
@@ -91,7 +91,7 @@ function TripPage() {
                 <ul className="mt-4 space-y-2">
                   {includedItems(trip.included).map((item, i) => (
                     <li key={i} className="flex items-start gap-3 text-lg text-foreground/85">
-                      <Check className="mt-1 h-5 w-5 shrink-0 text-primary" />
+                      <Check className="mt-1 h-5 w-5 shrink-0 text-ocean" />
                       <span>{item}</span>
                     </li>
                   ))}
@@ -102,7 +102,7 @@ function TripPage() {
             </section>
           )}
           {trip.camp_link && (
-            <a href={trip.camp_link} target="_blank" rel="noreferrer" className="inline-block font-semibold text-primary underline">Visit the camp website</a>
+            <a href={trip.camp_link} target="_blank" rel="noreferrer" className="inline-block font-semibold text-ocean underline">Visit the camp website</a>
           )}
           {trip.gallery.length > 0 && (
             <section>
@@ -118,9 +118,9 @@ function TripPage() {
           )}
         </div>
         {!past && <aside className="lg:sticky lg:top-24 lg:self-start">
-          <div id="request-form" className="scroll-mt-24 rounded-3xl bg-card p-6 shadow-soft">
+          <div id="request-form" className="sand-highlight scroll-mt-24 rounded-3xl bg-accent p-6 shadow-soft">
             {trip.price && <p className="font-display text-3xl font-extrabold text-primary">{trip.price}</p>}
-            {trip.status_note && <p className="mt-2 font-semibold text-accent">{trip.status_note}</p>}
+            {trip.status_note && <p className="mt-2 font-semibold text-primary">{trip.status_note}</p>}
             {requestable ? <RequestForm trip={trip} /> : (
               <p className="mt-4 text-muted-foreground">
                 {past ? "This trip has already happened." : trip.status === "sold out" ? "This trip is sold out." : "Requests open soon — follow us on Instagram for updates."}
@@ -128,7 +128,7 @@ function TripPage() {
             )}
           </div>
         </aside>}
-        {past && <section className="border-t border-border py-10 text-center"><h2 className="text-3xl font-bold">Want to join the next one?</h2><Button asChild className="mt-5 rounded-full bg-accent text-accent-foreground"><Link to="/trips">Explore upcoming trips</Link></Button></section>}
+        {past && <section className="border-t border-border py-10 text-center"><h2 className="text-3xl font-bold">Want to join the next one?</h2><Button asChild className="mt-5 rounded-full bg-primary text-primary-foreground hover:bg-primary-hover"><Link to="/trips">Explore upcoming trips</Link></Button></section>}
       </div>
       {requestable && <StickyRequestBar trip={trip} />}
     </>
@@ -148,7 +148,7 @@ function StickyRequestBar({ trip }: { trip: Trip }) {
     <div className={`fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 backdrop-blur transition-transform duration-300 lg:hidden ${formVisible ? "translate-y-full" : "translate-y-0"}`}>
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 p-4">
         {trip.price && <p className="font-display text-xl font-extrabold text-primary">{trip.price}</p>}
-        <Button className="rounded-full bg-accent px-6 font-bold text-accent-foreground" onClick={() => document.getElementById("request-form")?.scrollIntoView({ behavior: "smooth", block: "start" })}>
+        <Button className="rounded-full bg-primary px-6 font-bold text-primary-foreground hover:bg-primary-hover" onClick={() => document.getElementById("request-form")?.scrollIntoView({ behavior: "smooth", block: "start" })}>
           Request a spot
         </Button>
       </div>
@@ -176,12 +176,12 @@ function RequestForm({ trip }: { trip: Trip }) {
           href={whatsappLink(trip, name.trim(), n)}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex h-auto w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-4 font-bold text-accent-foreground transition hover:scale-[1.02]"
+          className="inline-flex h-auto w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-4 font-bold text-primary-foreground hover:bg-primary-hover transition hover:scale-[1.02]"
         >
           <MessageCircle className="h-5 w-5" /> Request via WhatsApp
         </a>
       ) : (
-        <Button disabled className="inline-flex h-auto w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-4 font-bold text-accent-foreground disabled:opacity-50">
+        <Button disabled className="inline-flex h-auto w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-4 font-bold text-primary-foreground hover:bg-primary-hover disabled:opacity-50">
           <MessageCircle className="h-5 w-5" /> Request via WhatsApp
         </Button>
       )}

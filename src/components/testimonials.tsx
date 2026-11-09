@@ -31,7 +31,7 @@ export function Testimonials({ items }: { items: Testimonial[] }) {
 
   if (!count) return null;
   return (
-    <section aria-labelledby="testimonials-heading" aria-roledescription="carousel" className="border-b border-border bg-secondary/30 py-10 md:py-12"
+    <section aria-labelledby="testimonials-heading" aria-roledescription="carousel" className="sand-highlight border-b border-border bg-accent py-10 md:py-12"
       onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
       onFocusCapture={() => setFocused(true)} onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false); }}
       onTouchStart={(event) => { const touch = event.touches[0]; if (touch) touchStart.current = { x: touch.clientX, y: touch.clientY }; setTouching(true); }}
@@ -39,7 +39,7 @@ export function Testimonials({ items }: { items: Testimonial[] }) {
       onTouchCancel={() => { touchStart.current = null; setTouching(false); }}>
       <div className="mx-auto max-w-3xl px-5 text-center">
         <h2 id="testimonials-heading" className="text-2xl font-bold md:text-3xl">What our travelers say</h2>
-        <Quote aria-hidden="true" className="mx-auto mb-3 mt-6 h-6 w-6 text-accent" />
+        <Quote aria-hidden="true" className="mx-auto mb-3 mt-6 h-6 w-6 text-ocean" />
         <div className="grid" aria-live={paused ? "polite" : "off"}>
           {items.map((item, index) => (
             <figure key={`${item.order}-${item.name}-${index}`} aria-hidden={index !== selected} role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${count}`} className={`col-start-1 row-start-1 flex min-w-0 flex-col items-center justify-between gap-6 px-2 md:px-10 ${index === selected ? "visible" : "invisible"}`}>
@@ -54,7 +54,7 @@ export function Testimonials({ items }: { items: Testimonial[] }) {
         {count > 1 && <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
           <Button variant="ghost" size="icon" className="shrink-0 rounded-full text-muted-foreground" aria-label="Previous testimonial" title="Previous testimonial" onClick={() => move(-1)}><ArrowLeft /></Button>
           <div className="flex max-w-full flex-wrap justify-center">
-            {items.map((item, index) => <Button key={index} variant="ghost" size="icon" className="h-8 w-7 rounded-full hover:bg-transparent focus-visible:bg-secondary" aria-label={`Show testimonial ${index + 1}`} title={item.name} aria-pressed={selected === index} onClick={() => setActive(index)}><span className={`h-2 w-2 rounded-full ${selected === index ? "bg-primary" : "bg-border"}`} /></Button>)}
+            {items.map((item, index) => <Button key={index} variant="ghost" size="icon" className="h-8 w-7 rounded-full hover:bg-transparent focus-visible:bg-secondary" aria-label={`Show testimonial ${index + 1}`} title={item.name} aria-pressed={selected === index} onClick={() => setActive(index)}><span className={`h-2 w-2 rounded-full ${selected === index ? "bg-ocean" : "bg-muted-foreground"}`} /></Button>)}
           </div>
           <Button variant="ghost" size="icon" className="shrink-0 rounded-full text-muted-foreground" aria-label="Next testimonial" title="Next testimonial" onClick={() => move(1)}><ArrowRight /></Button>
         </div>}

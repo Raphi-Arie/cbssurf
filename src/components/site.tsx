@@ -35,11 +35,11 @@ export function Header() {
         </Link>
         <nav className="hidden items-center gap-6 lg:flex">
           {nav.map((n) => (
-            <Link key={n.to} to={n.to} className="font-medium text-foreground/80 hover:text-primary" activeProps={{ className: "text-primary" }}>
+            <Link key={n.to} to={n.to} className="font-medium text-foreground/80 hover:text-ocean" activeProps={{ className: "bg-accent text-accent-foreground" }}>
               {n.label}
             </Link>
           ))}
-        <Button asChild className="rounded-full bg-accent text-accent-foreground hover:bg-accent/90"><a href={contactUrl} target="_blank" rel="noopener noreferrer"><MessageCircle />Contact us</a></Button>
+        <Button asChild className="rounded-full bg-primary text-primary-foreground hover:bg-primary-hover"><a href={contactUrl} target="_blank" rel="noopener noreferrer"><MessageCircle />Contact us</a></Button>
         </nav>
         <Button variant="ghost" size="icon" className="lg:hidden" aria-label={open ? "Close menu" : "Menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
           {open ? <X /> : <Menu />}
@@ -56,12 +56,12 @@ export function Header() {
         </div>
         <div className="mt-8 flex flex-col">
           {nav.map((n) => (
-            <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className="border-b border-border py-4 text-2xl font-bold">
+            <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className="border-b border-border py-4 text-2xl font-bold" activeProps={{ className: "bg-accent text-accent-foreground" }}>
               {n.label}
             </Link>
           ))}
         </div>
-        <Button asChild className="mt-auto h-12 rounded-full bg-accent text-base font-bold text-accent-foreground"><a href={contactUrl} target="_blank" rel="noopener noreferrer"><MessageCircle />Contact us</a></Button>
+        <Button asChild className="mt-auto h-12 rounded-full bg-primary text-base font-bold text-primary-foreground hover:bg-primary-hover"><a href={contactUrl} target="_blank" rel="noopener noreferrer"><MessageCircle />Contact us</a></Button>
       </nav>
     )}
     </>
@@ -74,32 +74,32 @@ export function Footer() {
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-[1.2fr_1fr_1fr] md:py-16">
         <div>
           <Logo dark />
-          <p className="mt-4 max-w-xs text-primary-foreground/70">Surf trips with friends. Salt, sun & good people.</p>
+          <p className="mt-4 max-w-xs text-footer-muted">Surf trips with friends. Salt, sun & good people.</p>
           <div className="mt-6 flex gap-3">
-            <a href={contactUrl} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-primary-foreground/10 transition hover:bg-primary-foreground/20">
+            <a href={contactUrl} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-accent text-accent-foreground transition hover:bg-sand-hover">
               <MessageCircle className="h-5 w-5" />
             </a>
-            <a href="https://instagram.com/cbs.surf" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-primary-foreground/10 transition hover:bg-primary-foreground/20">
+            <a href="https://instagram.com/cbs.surf" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-accent text-accent-foreground transition hover:bg-sand-hover">
               <Instagram className="h-5 w-5" />
             </a>
           </div>
         </div>
         <nav aria-label="Footer">
-          <p className="text-sm font-bold uppercase tracking-wider text-primary-foreground/50">Explore</p>
+          <p className="text-sm font-bold uppercase tracking-wider text-footer-muted">Explore</p>
           <ul className="mt-4 space-y-2.5">
             {nav.map((n) => (
-              <li key={n.to}><Link to={n.to} className="font-medium text-primary-foreground/80 transition hover:text-primary-foreground">{n.label}</Link></li>
+              <li key={n.to}><Link to={n.to} className="font-medium text-footer-muted transition hover:text-primary-foreground">{n.label}</Link></li>
             ))}
           </ul>
         </nav>
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-primary-foreground/50">Legal</p>
+          <p className="text-sm font-bold uppercase tracking-wider text-footer-muted">Legal</p>
           <ul className="mt-4 space-y-2.5">
-            <li><Link to="/privacy" className="font-medium text-primary-foreground/80 transition hover:text-primary-foreground">Privacy</Link></li>
+            <li><Link to="/privacy" className="font-medium text-footer-muted transition hover:text-primary-foreground">Privacy</Link></li>
           </ul>
         </div>
       </div>
-      <div className="border-t border-primary-foreground/10 px-5 py-5 text-center text-sm text-primary-foreground/50">CBS Surf — chase waves, find your crew.</div>
+      <div className="border-t border-primary-foreground/10 px-5 py-5 text-center text-sm text-footer-muted">CBS Surf — chase waves, find your crew.</div>
     </footer>
   );
 }
@@ -129,7 +129,7 @@ export function TripCard({ trip, past = false, compact = false }: { trip: Trip; 
           <span className="inline-flex items-center gap-1"><CalendarDays className="h-4 w-4" />{past ? formatMonthRange(trip.start_date, trip.end_date) : formatDateRange(trip.start_date, trip.end_date)}</span>
         </p>
         {!compact && trip.short_description && <p className="mt-3 text-foreground/80">{trip.short_description}</p>}
-        {!past && trip.status_note && <p className="mt-3 text-sm font-semibold text-accent">{trip.status_note}</p>}
+        {!past && trip.status_note && <p className="mt-3 text-sm font-semibold text-ocean">{trip.status_note}</p>}
         {!past && trip.price && <p className="mt-4 font-display text-lg font-bold text-primary">{trip.price}</p>}
       </div>
     </Link>
