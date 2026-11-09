@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { statTarget, type Stat } from "@/lib/sheets";
 
-function StatNumber({ value, compact = false }: { value: string; compact?: boolean }) {
+function StatNumber({ value }: { value: string }) {
   const ref = useRef<HTMLParagraphElement>(null);
   const [display, setDisplay] = useState(value);
   const [visible, setVisible] = useState(false);
@@ -26,10 +26,8 @@ function StatNumber({ value, compact = false }: { value: string; compact?: boole
     observer.observe(element);
     return () => { observer.disconnect(); cancelAnimationFrame(frame); };
   }, [value]);
-  return <p ref={ref} aria-label={value} className={`stat-number break-words font-display font-extrabold text-ocean transition duration-700 motion-reduce:transition-none ${compact ? "text-3xl leading-tight md:text-4xl" : "min-h-12 text-3xl md:min-h-16 md:text-5xl"} ${visible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"}`}><span aria-hidden="true">{display}</span></p>;
+  return <p ref={ref} aria-label={value} className={`stat-number min-h-10 break-words font-display text-2xl font-extrabold leading-tight text-ocean transition duration-700 motion-reduce:transition-none sm:min-h-16 sm:text-5xl ${visible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"}`}><span aria-hidden="true">{display}</span></p>;
 }
-export function StatsGrid({ stats, compact = false }: { stats: Stat[]; compact?: boolean }) {
-  // Flex with fixed basis keeps every row balanced: 2 columns on mobile, 4 on desktop,
-  // and an incomplete last row stays centered.
-  return <div className={compact ? "grid grid-cols-2 gap-y-6 sm:flex sm:justify-center" : "flex flex-wrap justify-center gap-x-6 gap-y-10"}>{stats.map((stat, i) => <div key={`${stat.label}-${i}`} className={compact ? "min-w-0 flex-1 px-3 text-center sm:border-l sm:border-border sm:px-5 sm:first:border-l-0" : "w-[calc(50%-1.5rem)] min-w-0 text-center lg:w-[calc(25%-1.5rem)]"}><StatNumber value={stat.number} compact={compact} /><p className={compact ? "mt-1 text-sm font-semibold" : "mt-2 font-bold"}>{stat.label}</p>{stat.note && <p className={compact ? "mx-auto mt-1 max-w-48 text-xs leading-relaxed text-muted-foreground" : "mx-auto mt-2 max-w-56 text-sm text-muted-foreground"}>{stat.note}</p>}</div>)}</div>;
+export function StatsGrid({ stats }: { stats: Stat[] }) {
+  return <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:gap-y-14">{stats.map((stat, i) => <div key={`${stat.label}-${i}`} className={`min-w-0 text-center ${stats.length % 2 === 1 && i === stats.length - 1 ? "col-span-2 mx-auto w-1/2" : ""}`}><StatNumber value={stat.number} /><p className="mt-4 text-sm font-bold sm:mt-5 sm:text-lg">{stat.label}</p>{stat.note && <p className="mx-auto mt-2 max-w-56 text-sm text-muted-foreground">{stat.note}</p>}</div>)}</div>;
 }

@@ -3,12 +3,15 @@ import { describe, expect, it } from "vitest";
 import { PhotoWall } from "./photo-wall";
 
 describe("past trip photo browsing", () => {
-  it("shows 24 photos initially, reveals more, and browses them in a lightbox", () => {
+  it("shows 12 photos initially, reveals more, and browses them in a lightbox", () => {
     const photos = Array.from({ length: 30 }, (_, i) => ({ src: `/photo-${i}.jpg`, trip: `Trip ${i}` }));
     render(<PhotoWall photos={photos} />);
+    expect(screen.getAllByRole("button", { name: /^Open Trip/ })).toHaveLength(12);
+    fireEvent.click(screen.getByRole("button", { name: "Show more" }));
     expect(screen.getAllByRole("button", { name: /^Open Trip/ })).toHaveLength(24);
     fireEvent.click(screen.getByRole("button", { name: "Show more" }));
     expect(screen.getAllByRole("button", { name: /^Open Trip/ })).toHaveLength(30);
+    expect(screen.queryByRole("button", { name: "Show more" })).toBeNull();
     const first = screen.getAllByRole("button", { name: /^Open Trip/ })[0];
     if (!first) throw new Error("Missing first photo");
     fireEvent.click(first);
