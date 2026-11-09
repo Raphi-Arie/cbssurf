@@ -11,7 +11,7 @@ export const Route = createFileRoute("/past-trips")({
   loader: async () => {
     const [trips, stats, testimonials] = await Promise.all([getTrips(), getStats(), getTestimonials()]);
     const { past } = splitTrips(trips, todayIso());
-    return { past, stats: stats.filter((s) => s.show_on_home), photos: pastPhotos(past), testimonials };
+    return { past, stats, photos: pastPhotos(past), testimonials };
   },
   head: () =>
     pageHead(
