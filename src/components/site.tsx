@@ -38,8 +38,8 @@ export function Header() {
             <Link
               key={n.to}
               to={n.to}
-              className="inline-flex h-9 items-center rounded-full px-4 py-2 text-sm font-medium text-foreground/80 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              inactiveProps={{ className: "hover:bg-secondary hover:text-ocean" }}
+              className="inline-flex h-9 items-center rounded-full px-4 py-2 text-sm font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              inactiveProps={{ className: "text-foreground/80 hover:bg-secondary hover:text-ocean" }}
               activeProps={{ className: "bg-accent text-accent-foreground" }}
             >
               {n.label}
