@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import hero from "@/assets/hero-surf.jpg";
 import { getTrips, getStats } from "@/lib/sheets.functions";
 import { splitTrips, todayIso } from "@/lib/sheets";
+import { homePastTrips } from "@/lib/previews";
 import { StatsGrid } from "@/components/stats";
 import { Button } from "@/components/ui/button";
 import { LoadError, TripCard } from "@/components/site";
@@ -21,7 +22,7 @@ export const Route = createFileRoute("/")({
   loader: async () => {
     const [trips, stats] = await Promise.all([getTrips(), getStats()]);
     const { upcoming, past } = splitTrips(trips, todayIso());
-    return { upcoming: upcoming.slice(0, 3), past: past.slice(0, 3), stats: stats.filter((s) => s.show_on_home) };
+    return { upcoming: upcoming.slice(0, 3), past: homePastTrips(past), stats: stats.filter((s) => s.show_on_home) };
   },
   component: Home,
   errorComponent: ({ error }) => <LoadError error={error} />,
@@ -45,7 +46,7 @@ function Home() {
         </div>
       </section>
 
-      {stats.length > 0 && <section className="sand-highlight border-b border-border bg-accent py-12"><div className="mx-auto max-w-6xl px-5"><StatsGrid stats={stats} /><div className="mt-8 text-center"><Link to="/about" className="text-sm font-semibold text-primary">More about us →</Link></div></div></section>}
+      {stats.length > 0 && <section className="border-b border-border bg-secondary py-12 md:py-16"><div className="mx-auto max-w-6xl px-5"><StatsGrid stats={stats} /><div className="mt-8 text-center"><Link to="/about" className="text-sm font-semibold text-ocean">More about us →</Link></div></div></section>}
 
       <section className="mx-auto max-w-6xl px-5 pt-12 md:pt-20">
         <SectionHead title="Upcoming trips" to="/trips" />
@@ -58,7 +59,7 @@ function Home() {
 
       {past.length > 0 && <section className="mx-auto max-w-6xl px-5 pt-12 md:pt-20">
         <h2 className="mb-8 text-3xl font-extrabold md:text-4xl">Past trips</h2>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{past.map((t) => <TripCard key={t.id} trip={t} past compact />)}</div>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-5">{past.map((t) => <TripCard key={t.id} trip={t} past compact />)}</div>
         <div className="mt-8"><Button asChild className="rounded-full bg-primary text-primary-foreground hover:bg-primary-hover"><Link to="/past-trips">Explore past trips <ArrowRight /></Link></Button></div>
       </section>}
 

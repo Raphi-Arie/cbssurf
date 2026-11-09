@@ -40,9 +40,9 @@ function PastTrips() {
         </div>
       </section>
       {stats.length > 0 && (
-        <section className="border-b border-border bg-background py-7 md:py-8">
-          <div className="mx-auto max-w-5xl px-5">
-            <StatsGrid stats={stats} compact />
+        <section className="border-b border-border bg-secondary py-12 md:py-16">
+          <div className="mx-auto max-w-6xl px-5">
+            <StatsGrid stats={stats} />
           </div>
         </section>
       )}

@@ -118,13 +118,13 @@ export function TripCard({ trip, past = false, compact = false }: { trip: Trip; 
   const image = trip.image_url || (past ? trip.gallery[0] : "");
   return (
     <Link to="/trips/$id" params={{ id: trip.id }} className={`group overflow-hidden rounded-3xl bg-card shadow-soft transition hover:-translate-y-1 ${past ? "opacity-80" : ""}`}>
-      <div className="relative aspect-[4/3] overflow-hidden">
+      <div className={`relative overflow-hidden ${compact ? "aspect-[16/9]" : "aspect-[4/3]"}`}>
         {image ? <img src={image} alt={trip.title} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" /> : <div className="flex h-full items-center justify-center bg-muted p-6 text-center text-lg font-bold text-muted-foreground">{trip.location}</div>}
         {!past && <div className="absolute left-4 top-4"><StatusBadge status={trip.status} /></div>}
       </div>
-      <div className={compact ? "p-4" : "p-6"}>
-        <h3 className={compact ? "text-xl font-bold" : "text-2xl font-bold"}>{trip.title}</h3>
-        <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
+      <div className={compact ? "p-3 md:p-4" : "p-6"}>
+        <h3 className={compact ? "break-words text-base font-bold md:text-lg" : "text-2xl font-bold"}>{trip.title}</h3>
+        <p className={`mt-2 flex flex-wrap gap-x-4 gap-y-1 text-muted-foreground ${compact ? "text-xs md:text-sm" : "text-sm"}`}>
           <span className="inline-flex items-center gap-1"><MapPin className="h-4 w-4" />{trip.location}</span>
           <span className="inline-flex items-center gap-1"><CalendarDays className="h-4 w-4" />{past ? formatMonthRange(trip.start_date, trip.end_date) : formatDateRange(trip.start_date, trip.end_date)}</span>
         </p>
