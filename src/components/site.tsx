@@ -33,13 +33,19 @@ export function Header() {
         <Link to="/" aria-label="CBS Surf home">
           <Logo />
         </Link>
-        <nav className="hidden items-center gap-6 lg:flex">
+        <nav className="hidden items-center gap-1 lg:flex">
           {nav.map((n) => (
-            <Link key={n.to} to={n.to} className="font-medium text-foreground/80 hover:text-ocean" activeProps={{ className: "bg-accent text-accent-foreground" }}>
+            <Link
+              key={n.to}
+              to={n.to}
+              className="inline-flex h-9 items-center rounded-full px-4 py-2 text-sm font-medium text-foreground/80 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              inactiveProps={{ className: "hover:bg-secondary hover:text-ocean" }}
+              activeProps={{ className: "bg-accent text-accent-foreground" }}
+            >
               {n.label}
             </Link>
           ))}
-        <Button asChild className="rounded-full bg-primary text-primary-foreground hover:bg-primary-hover"><a href={contactUrl} target="_blank" rel="noopener noreferrer"><MessageCircle />Contact us</a></Button>
+        <Button asChild className="ml-3 rounded-full bg-primary text-primary-foreground hover:bg-primary-hover"><a href={contactUrl} target="_blank" rel="noopener noreferrer"><MessageCircle />Contact us</a></Button>
         </nav>
         <Button variant="ghost" size="icon" className="lg:hidden" aria-label={open ? "Close menu" : "Menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
           {open ? <X /> : <Menu />}
@@ -54,9 +60,15 @@ export function Header() {
             <X />
           </Button>
         </div>
-        <div className="mt-8 flex flex-col">
+        <div className="mt-8 flex flex-col items-start gap-1">
           {nav.map((n) => (
-            <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className="border-b border-border py-4 text-2xl font-bold" activeProps={{ className: "bg-accent text-accent-foreground" }}>
+            <Link
+              key={n.to}
+              to={n.to}
+              onClick={() => setOpen(false)}
+              className="inline-flex items-center rounded-full px-4 py-2 text-2xl font-bold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              activeProps={{ className: "bg-accent text-accent-foreground" }}
+            >
               {n.label}
             </Link>
           ))}
