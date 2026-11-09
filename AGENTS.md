@@ -33,3 +33,4 @@ use the editor.
 - Trip parsing preserves explicit IDs and derives missing IDs from title and start date so incomplete sheet identifiers cannot produce links back to the trip list.
 - Fetch stats alongside content through the existing server CSV boundary; use shared client-safe parsing and presentation helpers so all pages follow the same content rules.
 - Archive photos are mixed deterministically in pastPhotos (round-robin, max 4 per trip first, then the rest) so the wall stays balanced and SSR-consistent; stats animations and testimonial carousel timers still run after hydration.
+- Site colors use global semantic tokens with distinct primary-button and ocean-link roles; sand-highlight regions override secondary text to navy for AA contrast without changing layout.

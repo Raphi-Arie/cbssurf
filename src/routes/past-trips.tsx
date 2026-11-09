@@ -13,11 +13,11 @@ export const Route = createFileRoute("/past-trips")({
     const { past } = splitTrips(trips, todayIso());
     return { past, stats: stats.filter((s) => s.show_on_home), photos: pastPhotos(past), testimonials };
   },
-  head: ({ loaderData }) =>
+  head: () =>
     pageHead(
       "Where we've been",
       "Impressions from past CBS Surf trips and the people who made them special.",
-      loaderData?.past[0]?.image_url || loaderData?.past[0]?.gallery[0],
+       archiveHero,
     ),
   component: PastTrips,
   errorComponent: ({ error }) => <LoadError error={error} />,

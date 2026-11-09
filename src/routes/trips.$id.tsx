@@ -118,9 +118,9 @@ function TripPage() {
           )}
         </div>
         {!past && <aside className="lg:sticky lg:top-24 lg:self-start">
-          <div id="request-form" className="scroll-mt-24 rounded-3xl bg-accent p-6 shadow-soft">
+          <div id="request-form" className="sand-highlight scroll-mt-24 rounded-3xl bg-accent p-6 shadow-soft">
             {trip.price && <p className="font-display text-3xl font-extrabold text-primary">{trip.price}</p>}
-            {trip.status_note && <p className="mt-2 font-semibold text-ocean">{trip.status_note}</p>}
+            {trip.status_note && <p className="mt-2 font-semibold text-primary">{trip.status_note}</p>}
             {requestable ? <RequestForm trip={trip} /> : (
               <p className="mt-4 text-muted-foreground">
                 {past ? "This trip has already happened." : trip.status === "sold out" ? "This trip is sold out." : "Requests open soon — follow us on Instagram for updates."}

@@ -161,3 +161,6 @@
 @utility bg-hero-overlay { background-image: var(--gradient-hero); }
 
 .stat-number { overflow-wrap: anywhere; }
+
+/* Small secondary text on sand needs navy to retain AA contrast. */
+.sand-highlight { --muted-foreground: var(--foreground); }

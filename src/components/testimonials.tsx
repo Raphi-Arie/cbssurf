@@ -31,7 +31,7 @@ export function Testimonials({ items }: { items: Testimonial[] }) {
 
   if (!count) return null;
   return (
-    <section aria-labelledby="testimonials-heading" aria-roledescription="carousel" className="border-b border-border bg-accent py-10 md:py-12"
+    <section aria-labelledby="testimonials-heading" aria-roledescription="carousel" className="sand-highlight border-b border-border bg-accent py-10 md:py-12"
       onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
       onFocusCapture={() => setFocused(true)} onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false); }}
       onTouchStart={(event) => { const touch = event.touches[0]; if (touch) touchStart.current = { x: touch.clientX, y: touch.clientY }; setTouching(true); }}

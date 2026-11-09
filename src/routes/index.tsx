@@ -45,7 +45,7 @@ function Home() {
         </div>
       </section>
 
-      {stats.length > 0 && <section className="border-b border-border bg-accent py-12"><div className="mx-auto max-w-6xl px-5"><StatsGrid stats={stats} /><div className="mt-8 text-center"><Link to="/about" className="text-sm font-semibold text-ocean">More about us →</Link></div></div></section>}
+      {stats.length > 0 && <section className="sand-highlight border-b border-border bg-accent py-12"><div className="mx-auto max-w-6xl px-5"><StatsGrid stats={stats} /><div className="mt-8 text-center"><Link to="/about" className="text-sm font-semibold text-primary">More about us →</Link></div></div></section>}
 
       <section className="mx-auto max-w-6xl px-5 pt-12 md:pt-20">
         <SectionHead title="Upcoming trips" to="/trips" />
