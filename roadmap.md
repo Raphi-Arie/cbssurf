@@ -1,4 +1,5 @@
 # Site updates
+- [ ] Match KPI reference everywhere without sand; limit smaller archive photos and Home past-trip previews; verify desktop/mobile
 - [x] Apply requested navy/ocean/sand palette only and verify desktop/mobile contrast and interactions
 - [x] Remove Stories pages, navigation, Home section and News CSV loading
 - [x] Connect published testimonials and add archive carousel with rule and interaction tests
