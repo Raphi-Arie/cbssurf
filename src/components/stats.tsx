@@ -26,7 +26,7 @@ function StatNumber({ value, compact = false }: { value: string; compact?: boole
     observer.observe(element);
     return () => { observer.disconnect(); cancelAnimationFrame(frame); };
   }, [value]);
-  return <p ref={ref} aria-label={value} className={`stat-number break-words font-display font-extrabold text-primary transition duration-700 motion-reduce:transition-none ${compact ? "text-3xl leading-tight md:text-4xl" : "min-h-12 text-3xl md:min-h-16 md:text-5xl"} ${visible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"}`}><span aria-hidden="true">{display}</span></p>;
+  return <p ref={ref} aria-label={value} className={`stat-number break-words font-display font-extrabold text-ocean transition duration-700 motion-reduce:transition-none ${compact ? "text-3xl leading-tight md:text-4xl" : "min-h-12 text-3xl md:min-h-16 md:text-5xl"} ${visible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"}`}><span aria-hidden="true">{display}</span></p>;
 }
 export function StatsGrid({ stats, compact = false }: { stats: Stat[]; compact?: boolean }) {
   // Flex with fixed basis keeps every row balanced: 2 columns on mobile, 4 on desktop,

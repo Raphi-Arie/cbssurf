@@ -30,7 +30,7 @@ function Trips() {
         {upcoming.map((t) => <TripCard key={t.id} trip={t} />)}
       </div>
       {upcoming.length === 0 && <p className="mt-6 text-muted-foreground">New trips coming soon.</p>}
-      <Link to="/past-trips" className="mt-10 inline-block font-semibold text-primary">See our past trips →</Link>
+      <Link to="/past-trips" className="mt-10 inline-block font-semibold text-ocean">See our past trips →</Link>
     </div>
   );
 }
