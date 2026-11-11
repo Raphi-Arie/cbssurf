@@ -2,14 +2,16 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Instagram, Menu, X, CalendarDays, MapPin, MessageCircle } from "lucide-react";
 import { formatDateRange, formatMonthRange, type Trip } from "@/lib/sheets";
-import logoAsset from "@/assets/cbs-logo.jpg.asset.json";
 
 import { Button } from "@/components/ui/button";
+
+const logoUrl =
+  "https://res.cloudinary.com/ugtwklc6/image/upload/f_auto,q_auto,w_160/v1794162612/332920328_608070644495587_1136323830952893030_n.jpg";
 
 export function Logo({ dark = false }: { dark?: boolean }) {
   return (
     <span className="inline-flex items-center gap-2.5">
-      <img src={logoAsset.url} alt="CBS Surf logo" className="h-10 w-10 shrink-0 rounded-full object-cover" />
+      <img src={logoUrl} alt="CBS Surf logo" className="h-10 w-10 shrink-0 rounded-full object-cover" />
       <span className={`font-display text-xl font-extrabold tracking-tight ${dark ? "text-primary-foreground" : "text-foreground"}`}>CBS Surf</span>
     </span>
   );
