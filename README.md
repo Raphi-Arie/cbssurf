@@ -1,26 +1,50 @@
-# Cbssurf
+# CBS Surf
 
-Implement exactly the screenshot and nothing else
+Website for **CBS Surf** (CBS = Copenhagen Business School), a community that organizes surf trips. Visitors browse upcoming and past trips, see the program and what's included, and request a spot with a pre-filled WhatsApp message. Built by Arie Harperath & Raphael Thomas.
 
-This project was built with [Lovable](https://lovable.dev).
+**Live site:** coming soon (will be hosted on Vercel)
 
-**Live app**: https://cbssurf.lovable.app
+## What it does
 
-## Build with Lovable
+- **Trips:** upcoming trips (sorted by start date) and past trips. Each trip page has a description, a day-by-day program, what's included, a photo gallery and a link to the camp.
+- **Status per trip:** open, coming soon or sold out, with an optional note. Only open trips show the request button.
+- **Request flow:** name and number of people, then WhatsApp opens with a pre-filled message. The site handles no payments on purpose.
+- **Community:** testimonials carousel, community stats, photo wall, About page, "How it works" with an FAQ, and a privacy page.
+- **Mobile-first**, because most visitors arrive from Instagram.
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/518d58f7-c36d-4afe-b902-424f7a9ae96b).
+## Content without touching code
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+The organizers edit a Google Sheet, not the code. Trips, testimonials and stats are published as CSV, and the site fetches them. The rules live in `src/lib/sheets.ts` and are covered by unit tests:
 
-## Development
+- only rows with `visible = yes` are shown
+- trips are split into upcoming and past by their end date
+- Cloudinary image URLs get `f_auto,q_auto,w_1600`, so images load smaller and faster
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+A new trip is a new row in the sheet. Closing a trip is a change in its status column.
+
+## Stack
+
+React, TypeScript, TanStack Start (router and query), Tailwind CSS, shadcn/ui (Radix), Vite and Vitest.
+Google Sheets is the content source, and Cloudinary hosts the images.
+
+## How it was built
+
+The product requirements were planned in a chat with Claude: pages, a booking flow without payments, and updates that don't need a developer. The site was then built step by step with [Lovable](https://lovable.dev), an AI app builder, and the code is synced to this repo. `roadmap.md` lists the iterations, such as the palette, the mobile layout and the testimonials carousel.
+
+## Run it locally
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
+npm install
+npm run dev     # start the dev server
+npm test        # run the tests
+npm run build   # production build
 ```
+
+## Project structure
+
+| Path | What it is |
+|---|---|
+| `src/routes/` | The pages: home, trips, trip detail, past trips, how it works, about, privacy |
+| `src/components/` | Shared parts such as the trip cards, photo wall, testimonials and stat
+| `src/lib/sheets.ts` | Parsing the sheets and the business rules (status, past or upcoming, images) |
+| `src/lib/sheets.functions.ts` | Fetching the published sheets |
