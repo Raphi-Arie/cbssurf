@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Instagram, Menu, X, CalendarDays, MapPin, MessageCircle } from "lucide-react";
-import { formatDateRange, formatMonthRange, type Trip } from "@/lib/sheets";
+import { contactLink, formatDateRange, formatMonthRange, type Trip } from "@/lib/sheets";
 
 import { Button } from "@/components/ui/button";
 
@@ -17,8 +17,6 @@ export function Logo({ dark = false }: { dark?: boolean }) {
   );
 }
 
-export const contactUrl = "https://wa.me/4915735462749?text=" + encodeURIComponent("Hi CBS Surf! I have a question about your trips.");
-
 const nav = [
   { to: "/trips", label: "Trips" },
   { to: "/past-trips", label: "Past trips" },
@@ -26,8 +24,9 @@ const nav = [
   { to: "/about", label: "About us" },
 ] as const;
 
-export function Header() {
+export function Header({ whatsappNumber }: { whatsappNumber?: string }) {
   const [open, setOpen] = useState(false);
+  const contactUrl = contactLink(whatsappNumber);
   return (
     <>
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
@@ -82,7 +81,8 @@ export function Header() {
   );
 }
 
-export function Footer() {
+export function Footer({ whatsappNumber }: { whatsappNumber?: string }) {
+  const contactUrl = contactLink(whatsappNumber);
   return (
     <footer className="mt-16 bg-ocean-deep text-primary-foreground md:mt-24">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-[1.2fr_1fr_1fr] md:py-16">

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { canRequest, cloudinary, parseCsv, splitTrips, toTrips, whatsappLink, toStats, statTarget, formatDateRange, formatMonth, formatMonthRange, splitParagraphs, includedItems, pastPhotos, toTestimonials } from "./sheets";
+import { canRequest, cloudinary, parseCsv, splitTrips, toTrips, whatsappLink, contactLink, toSettings, toStats, statTarget, formatDateRange, formatMonth, formatMonthRange, splitParagraphs, includedItems, pastPhotos, toTestimonials } from "./sheets";
 
 const csv = `id,title,start_date,end_date,status,visible,program,gallery_urls
 a,Alpha,2027-03-01,2027-03-07,open,yes,"Day 1: x
@@ -22,9 +22,8 @@ describe("sheet rules", () => {
     ]);
   });
   it("sorts stats by order and preserves text numbers exactly", () => {
-    const stats = toStats(parseCsv("order,number,label,note,show_on_home\n3,countless,Stories,,no\n1,400+,People,Good crew,yes\n2,∞,Waves,,yes"));
+    const stats = toStats(parseCsv("order,number,label,note\n3,countless,Stories,\n1,400+,People,Good crew\n2,∞,Waves,"));
     expect(stats.map((s) => s.number)).toEqual(["400+", "∞", "countless"]);
-    expect(stats.filter((s) => s.show_on_home).map((s) => s.number)).toEqual(["400+", "∞"]);
     expect(stats[0]?.note).toBe("Good crew");
   });
   it("counts only plain numbers or numbers with a trailing plus", () => {
@@ -101,10 +100,46 @@ describe("sheet rules", () => {
   it("builds the WhatsApp message with straight apostrophes, formatted dates and person/people", () => {
     const fuerte = { ...trips[0]!, title: "Fuerteventura", start_date: "2027-01-31", end_date: "2027-02-06" };
     expect(whatsappLink(fuerte, "Test", 1)).toBe(
-      "https://wa.me/4915735462749?text=Hi%20CBS%20Surf!%20I'm%20Test%20and%20I'd%20like%20to%20join%20the%20Fuerteventura%20trip%20(31%20Jan%20%E2%80%93%206%20Feb%202027)%20with%201%20person.",
+      "https://wa.me/4551160850?text=Hi%20CBS%20Surf!%20I'm%20Test%20and%20I'd%20like%20to%20join%20the%20Fuerteventura%20trip%20(31%20Jan%20%E2%80%93%206%20Feb%202027)%20with%201%20person.",
     );
     expect(decodeURIComponent(whatsappLink(fuerte, "Ana", 3))).toBe(
-      "https://wa.me/4915735462749?text=Hi CBS Surf! I'm Ana and I'd like to join the Fuerteventura trip (31 Jan – 6 Feb 2027) with 3 people.",
+      "https://wa.me/4551160850?text=Hi CBS Surf! I'm Ana and I'd like to join the Fuerteventura trip (31 Jan – 6 Feb 2027) with 3 people.",
     );
+  });
+});
+
+const fallback = {
+  homeHeroImage: "/home.jpg",
+  aboutHeroImage: "/about.jpg",
+  aboutStoryImage: "/story.jpg",
+  pastTripsHeroImage: "/past.jpg",
+  whatsappNumber: "4551160850",
+};
+
+describe("settings tab", () => {
+  it("reads image keys, applies Cloudinary transforms and keeps only digits of the number", () => {
+    const rows = parseCsv(
+      "key,value,note\n" +
+        "home_hero_image,https://res.cloudinary.com/x/image/upload/v1/h.jpg,Start\n" +
+        "about_story_image,https://example.com/s.jpg,\n" +
+        'whatsapp_number,+45 51 16-08-50,"ohne +"',
+    );
+    expect(toSettings(rows, fallback)).toEqual({
+      ...fallback,
+      homeHeroImage: "https://res.cloudinary.com/x/image/upload/f_auto,q_auto,w_1600/v1/h.jpg",
+      aboutStoryImage: "https://example.com/s.jpg",
+      whatsappNumber: "4551160850",
+    });
+  });
+  it("falls back for empty values, missing keys and an empty sheet", () => {
+    const rows = parseCsv("key,value,note\nhome_hero_image,,\nwhatsapp_number,+,");
+    expect(toSettings(rows, fallback)).toEqual(fallback);
+    expect(toSettings([], fallback)).toEqual(fallback);
+  });
+  it("builds the contact link with the given or default number", () => {
+    expect(contactLink()).toBe(
+      "https://wa.me/4551160850?text=Hi%20CBS%20Surf!%20I%20have%20a%20question%20about%20your%20trips.",
+    );
+    expect(contactLink("123")).toMatch(/^https:\/\/wa\.me\/123\?text=/);
   });
 });

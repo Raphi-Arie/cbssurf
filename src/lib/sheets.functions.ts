@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
-import { parseCsv, toTestimonials, toTrips, toStats } from "./sheets";
+import { parseCsv, toTestimonials, toTrips, toStats, toSettings } from "./sheets";
+import { defaultSettings } from "./site-settings";
 
 const BASE =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vTESVoeBWENGtVi5PwPJojmsHJKimSCPvim4NpA9v8mNy5dO3xm4H5bhnbgJRUtDRROQW42DwZ83djQ/pub";
@@ -23,6 +24,15 @@ export const getTestimonials = createServerFn({ method: "GET" }).handler(async (
 export const getStats = createServerFn({ method: "GET" }).handler(async () =>
   toStats(await fetchCsv("1025576896")),
 );
+
+// Never throws: a missing or broken Settings tab falls back to the built-in images and number.
+export const getSettings = createServerFn({ method: "GET" }).handler(async () => {
+  try {
+    return toSettings(await fetchCsv("1036658696"), defaultSettings);
+  } catch {
+    return defaultSettings;
+  }
+});
 
 // Older open preview tabs can still call this RPC until they reload.
 // Keep a no-content response without fetching the retired News CSV.

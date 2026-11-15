@@ -3,6 +3,8 @@ import { getTrips, getStats, getTestimonials } from "@/lib/sheets.functions";
 import { splitTrips, todayIso, pastPhotos } from "@/lib/sheets";
 import { pageHead } from "@/lib/metadata";
 import { StatsGrid } from "@/components/stats";
+import { defaultSettings, useSiteSettings } from "@/lib/site-settings";
+import type { SiteSettings } from "@/lib/sheets";
 import { PhotoWall } from "@/components/photo-wall";
 import { Testimonials } from "@/components/testimonials";
 import { LoadError, TripCard } from "@/components/site";
@@ -13,20 +15,19 @@ export const Route = createFileRoute("/past-trips")({
     const { past } = splitTrips(trips, todayIso());
     return { past, stats, photos: pastPhotos(past), testimonials };
   },
-  head: () =>
+  head: ({ matches }) =>
     pageHead(
       "Where we've been",
       "Impressions from past CBS Surf trips and the people who made them special.",
-       archiveHero,
+      ((matches[0]?.loaderData as SiteSettings | undefined) ?? defaultSettings).pastTripsHeroImage,
     ),
   component: PastTrips,
   errorComponent: ({ error }) => <LoadError error={error} />,
 });
-const archiveHero = "https://res.cloudinary.com/ugtwklc6/image/upload/f_auto,q_auto,w_1600/v1794163259/surftrip4.jpg";
 
 function PastTrips() {
   const { past, stats, photos, testimonials } = Route.useLoaderData();
-  const cover = archiveHero;
+  const cover = useSiteSettings().pastTripsHeroImage;
   return (
     <>
       <section className="relative flex min-h-[45vh] items-end md:min-h-[55vh]">

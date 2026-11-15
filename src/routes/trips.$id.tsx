@@ -6,6 +6,7 @@ import { canRequest, formatDateRange, formatMonthRange, includedItems, splitPara
 import { tripBackLink } from "@/lib/previews";
 import { Button } from "@/components/ui/button";
 import { LoadError, StatusBadge } from "@/components/site";
+import { useSiteSettings } from "@/lib/site-settings";
 
 export const Route = createFileRoute("/trips/$id")({
   loader: async ({ params }) => {
@@ -159,6 +160,7 @@ function StickyRequestBar({ trip }: { trip: Trip }) {
 }
 
 function RequestForm({ trip }: { trip: Trip }) {
+  const { whatsappNumber } = useSiteSettings();
   const [name, setName] = useState("");
   const [people, setPeople] = useState("1");
   const n = parseInt(people, 10);
@@ -175,7 +177,7 @@ function RequestForm({ trip }: { trip: Trip }) {
       </label>
       {valid ? (
         <a
-          href={whatsappLink(trip, name.trim(), n)}
+          href={whatsappLink(trip, name.trim(), n, whatsappNumber)}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex h-auto w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-4 font-bold text-primary-foreground hover:bg-primary-hover transition hover:scale-[1.02]"

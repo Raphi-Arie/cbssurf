@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import hero from "@/assets/hero-surf.jpg";
 import { getTrips, getStats } from "@/lib/sheets.functions";
 import { splitTrips, todayIso } from "@/lib/sheets";
 import { homePastTrips } from "@/lib/previews";
 import { StatsGrid } from "@/components/stats";
+import { useSiteSettings } from "@/lib/site-settings";
 import { Button } from "@/components/ui/button";
 import { LoadError, TripCard } from "@/components/site";
 
@@ -31,10 +31,11 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const { upcoming, past, stats } = Route.useLoaderData();
+  const { homeHeroImage } = useSiteSettings();
   return (
     <>
       <section className="relative flex min-h-[68vh] items-end overflow-hidden md:min-h-[88vh]">
-        <img src={hero} alt="Friends walking into the surf at sunset" width={1920} height={1088} className="absolute inset-0 h-full w-full object-cover" />
+        <img src={homeHeroImage} alt="Friends walking into the surf at sunset" width={1920} height={1088} className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-hero-overlay" />
         <div className="relative mx-auto w-full max-w-6xl px-5 pb-12 text-primary-foreground md:pb-24">
           <p className="mb-4 inline-block rounded-full bg-sun px-4 py-1 text-sm font-bold text-sun-foreground">Surf trips · Community · Sunshine</p>

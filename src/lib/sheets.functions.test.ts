@@ -14,3 +14,13 @@ it("returns no stories to older open tabs without loading the News CSV", async (
   expect(await getNews()).toEqual([]);
   expect(fetch).not.toHaveBeenCalled();
 });
+it("falls back to the built-in settings when the Settings CSV can't be loaded", async () => {
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async () => new Response("", { status: 500 })),
+  );
+  const { getSettings } = await import("./sheets.functions");
+  const { defaultSettings } = await import("./site-settings");
+  expect(await getSettings()).toEqual(defaultSettings);
+  expect(defaultSettings.whatsappNumber).toBe("4551160850");
+});

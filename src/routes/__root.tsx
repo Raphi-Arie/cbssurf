@@ -13,6 +13,8 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Footer, Header } from "@/components/site";
+import { getSettings } from "@/lib/sheets.functions";
+import { defaultSettings } from "@/lib/site-settings";
 
 function NotFoundComponent() {
   return (
@@ -71,6 +73,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/favicon.png", type: "image/png" },
     ],
   }),
+  loader: () => getSettings().catch(() => defaultSettings),
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
@@ -93,13 +96,14 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const { whatsappNumber } = Route.useLoaderData() ?? defaultSettings;
   return (
     <QueryClientProvider client={queryClient}>
-      <Header />
+      <Header whatsappNumber={whatsappNumber} />
       <main>
         <Outlet />
       </main>
-      <Footer />
+      <Footer whatsappNumber={whatsappNumber} />
     </QueryClientProvider>
   );
 }

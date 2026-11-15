@@ -131,10 +131,52 @@ export function canRequest(trip: Trip, today: string): boolean {
   return trip.status === "open" && !(trip.end_date && trip.end_date < today);
 }
 
-export function whatsappLink(trip: Trip, name: string, people: number): string {
+export const DEFAULT_WHATSAPP_NUMBER = "4551160850";
+
+export function whatsappLink(
+  trip: Trip,
+  name: string,
+  people: number,
+  number = DEFAULT_WHATSAPP_NUMBER,
+): string {
   const dates = formatDateRange(trip.start_date, trip.end_date);
   const msg = `Hi CBS Surf! I'm ${name} and I'd like to join the ${trip.title} trip (${dates}) with ${people} ${people === 1 ? "person" : "people"}.`;
-  return `https://wa.me/4915735462749?text=${encodeURIComponent(msg)}`;
+  return `https://wa.me/${number}?text=${encodeURIComponent(msg)}`;
+}
+
+export function contactLink(number = DEFAULT_WHATSAPP_NUMBER): string {
+  return (
+    `https://wa.me/${number}?text=` +
+    encodeURIComponent("Hi CBS Surf! I have a question about your trips.")
+  );
+}
+
+export interface SiteSettings {
+  homeHeroImage: string;
+  aboutHeroImage: string;
+  aboutStoryImage: string;
+  pastTripsHeroImage: string;
+  whatsappNumber: string;
+}
+
+const settingKeys: Record<Exclude<keyof SiteSettings, "whatsappNumber">, string> = {
+  homeHeroImage: "home_hero_image",
+  aboutHeroImage: "about_hero_image",
+  aboutStoryImage: "about_story_image",
+  pastTripsHeroImage: "past_trips_hero_image",
+};
+
+// Settings tab (key, value, note): empty or missing values keep the fallback so the site never loses an image or contact number.
+export function toSettings(rows: Record<string, string>[], fallback: SiteSettings): SiteSettings {
+  const values = new Map(rows.map((r) => [g(r, "key").toLowerCase(), g(r, "value")]));
+  const settings = { ...fallback };
+  for (const [field, key] of Object.entries(settingKeys) as [keyof typeof settingKeys, string][]) {
+    const url = values.get(key) ?? "";
+    if (url) settings[field] = cloudinary(url);
+  }
+  const digits = (values.get("whatsapp_number") ?? "").replace(/\D/g, "");
+  if (digits) settings.whatsappNumber = digits;
+  return settings;
 }
 
 export function formatDate(iso: string): string {
@@ -143,9 +185,21 @@ export function formatDate(iso: string): string {
   return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 }
 
-export interface Stat { order: number; number: string; label: string; note: string; show_on_home: boolean }
+export interface Stat {
+  order: number;
+  number: string;
+  label: string;
+  note: string;
+}
 export function toStats(rows: Record<string, string>[]): Stat[] {
-  return rows.map((r) => ({ order: Number(g(r, "order")) || 0, number: g(r, "number"), label: g(r, "label"), note: g(r, "note"), show_on_home: g(r, "show_on_home").toLowerCase() === "yes" })).sort((a, b) => a.order - b.order);
+  return rows
+    .map((r) => ({
+      order: Number(g(r, "order")) || 0,
+      number: g(r, "number"),
+      label: g(r, "label"),
+      note: g(r, "note"),
+    }))
+    .sort((a, b) => a.order - b.order);
 }
 export function statTarget(value: string): number | null {
   return /^\d+\+?$/.test(value) ? Number(value.replace(/\+$/, "")) : null;
