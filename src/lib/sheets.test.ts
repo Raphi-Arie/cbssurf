@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { canRequest, cloudinary, parseCsv, splitTrips, toTrips, whatsappLink, contactLink, toSettings, toStats, statTarget, formatDateRange, formatMonth, formatMonthRange, splitParagraphs, includedItems, pastPhotos, toTestimonials } from "./sheets";
+import { canRequest, cloudinary, parseCsv, splitTrips, toTrips, whatsappLink, contactLink, toSettings, toStats, statTarget, formatDateRange, formatMonth, formatMonthRange, splitParagraphs, includedItems, pastPhotos, toTestimonials, toTeam, teamPhoto } from "./sheets";
 
 const csv = `id,title,start_date,end_date,status,visible,program,gallery_urls
 a,Alpha,2027-03-01,2027-03-07,open,yes,"Day 1: x
@@ -10,6 +10,21 @@ d,Old,2025-01-01,2025-01-07,open,yes,,`;
 const trips = toTrips(parseCsv(csv));
 
 describe("sheet rules", () => {
+  it("shows only visible team members sorted by order, ignoring extra columns", () => {
+    const rows = parseCsv('order,name,role,intro,photo_url,visible,notes\n2,Mia,Coach,"Hi, I surf",,yes,x\n1,Jonas,Trip organiser,Hello,,YES,\n3,Hidden,Coach,,,no,\n4,Blank,Coach,,,,\n5,,Coach,,,yes,');
+    expect(toTeam(rows)).toEqual([
+      { order: 1, name: "Jonas", role: "Trip organiser", intro: "Hello", photo_url: "" },
+      { order: 2, name: "Mia", role: "Coach", intro: "Hi, I surf", photo_url: "" },
+    ]);
+  });
+  it("face-crops Cloudinary team photos once and leaves other URLs alone", () => {
+    const url = "https://res.cloudinary.com/x/image/upload/v1/jonas.png";
+    const cropped = "https://res.cloudinary.com/x/image/upload/c_fill,g_face,w_400,h_400,f_auto,q_auto/v1/jonas.png";
+    expect(teamPhoto(url)).toBe(cropped);
+    expect(teamPhoto(cropped)).toBe(cropped);
+    expect(teamPhoto("https://example.com/a.jpg")).toBe("https://example.com/a.jpg");
+    expect(teamPhoto("")).toBe("");
+  });
   it("only includes testimonials marked visible yes", () => {
     const rows = parseCsv("order,name,trip,quote,photo_url,visible\n1,Anna,Fuerteventura 2026,Great crew,,yes\n2,Hidden,Morocco,Not public,,no\n3,Blank,Portugal,Not public,,");
     expect(toTestimonials(rows).map((item) => item.name)).toEqual(["Anna"]);

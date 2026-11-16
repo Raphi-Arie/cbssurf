@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { parseCsv, toTestimonials, toTrips, toStats, toSettings } from "./sheets";
+import { parseCsv, toTestimonials, toTrips, toStats, toSettings, toTeam } from "./sheets";
 import { defaultSettings } from "./site-settings";
 
 const BASE =
@@ -24,6 +24,15 @@ export const getTestimonials = createServerFn({ method: "GET" }).handler(async (
 export const getStats = createServerFn({ method: "GET" }).handler(async () =>
   toStats(await fetchCsv("1025576896")),
 );
+
+// Never throws: if the Team tab can't be loaded the About page simply hides the team section.
+export const getTeam = createServerFn({ method: "GET" }).handler(async () => {
+  try {
+    return toTeam(await fetchCsv("2034280550"));
+  } catch {
+    return [];
+  }
+});
 
 // Never throws: a missing or broken Settings tab falls back to the built-in images and number.
 export const getSettings = createServerFn({ method: "GET" }).handler(async () => {

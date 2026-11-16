@@ -24,3 +24,8 @@ it("falls back to the built-in settings when the Settings CSV can't be loaded", 
   expect(await getSettings()).toEqual(defaultSettings);
   expect(defaultSettings.whatsappNumber).toBe("4551160850");
 });
+it("returns no team members when the Team CSV can't be loaded", async () => {
+  vi.stubGlobal("fetch", vi.fn(async () => new Response("", { status: 500 })));
+  const { getTeam } = await import("./sheets.functions");
+  expect(await getTeam()).toEqual([]);
+});

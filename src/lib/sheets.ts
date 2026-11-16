@@ -115,6 +115,31 @@ export function toTestimonials(rows: Record<string, string>[]): Testimonial[] {
     .sort((a, b) => a.order - b.order);
 }
 
+export interface TeamMember {
+  order: number;
+  name: string;
+  role: string;
+  intro: string;
+  photo_url: string;
+}
+
+const TEAM_PHOTO = "c_fill,g_face,w_400,h_400,f_auto,q_auto";
+
+// Square face-centred crop for the round team photos; non-Cloudinary URLs pass through unchanged.
+export function teamPhoto(url: string): string {
+  if (!url || !url.includes("res.cloudinary.com") || !url.includes("/upload/") || url.includes(TEAM_PHOTO)) return url;
+  return url.replace("/upload/", `/upload/${TEAM_PHOTO}/`);
+}
+
+// Team tab (order, name, role, intro, photo_url, visible): only "yes" rows with a name, sorted by order.
+export function toTeam(rows: Record<string, string>[]): TeamMember[] {
+  return rows
+    .filter(isVisible)
+    .filter((r) => g(r, "name"))
+    .map((r) => ({ order: Number(g(r, "order")) || 0, name: g(r, "name"), role: g(r, "role"), intro: g(r, "intro"), photo_url: teamPhoto(g(r, "photo_url")) }))
+    .sort((a, b) => a.order - b.order);
+}
+
 export function todayIso(now = new Date()): string {
   return now.toISOString().slice(0, 10);
 }
