@@ -35,7 +35,7 @@ function Home() {
   return (
     <>
       <section className="relative flex min-h-[68vh] items-end overflow-hidden md:min-h-[88vh]">
-        <img src={homeHeroImage} alt="Friends walking into the surf at sunset" width={1920} height={1088} className="absolute inset-0 h-full w-full object-cover" />
+        <img src={homeHeroImage} alt="Friends walking into the surf at sunset" width={1920} height={1088} className="absolute inset-0 h-full w-full object-cover object-[center_80%]" />
         <div className="absolute inset-0 bg-hero-overlay" />
         <div className="relative mx-auto w-full max-w-6xl px-5 pb-12 text-primary-foreground md:pb-24">
           <p className="mb-4 inline-block rounded-full bg-sun px-4 py-1 text-sm font-bold text-sun-foreground">Surf trips · Community · Sunshine</p>
