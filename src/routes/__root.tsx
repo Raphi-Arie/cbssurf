@@ -8,6 +8,7 @@ import {
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
+import { Analytics } from "@vercel/analytics/react";
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
@@ -104,6 +105,7 @@ function RootComponent() {
         <Outlet />
       </main>
       <Footer whatsappNumber={whatsappNumber} />
+      <Analytics />
     </QueryClientProvider>
   );
 }
