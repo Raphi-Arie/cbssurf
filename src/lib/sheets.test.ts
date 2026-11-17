@@ -26,7 +26,6 @@ describe("sheet rules", () => {
   it("hides the whole testimonials section when show_testimonials is no", () => {
     const head = "order,name,trip,quote,photo_url,visible,show_testimonials\n";
     expect(toTestimonials(parseCsv(head + "1,Anna,Bali,Great,,yes,no"))).toEqual([]);
-    expect(toTestimonials(parseCsv(head + "1,Anna,Bali,Great,,yes,yes\n2,Ben,Bali,Fun,,yes,no"))).toEqual([]);
     expect(toTestimonials(parseCsv(head + "1,Anna,Bali,Great,,yes,YES")).map((t) => t.name)).toEqual(["Anna"]);
   });
   it("face-crops Cloudinary team photos once and leaves other URLs alone", () => {

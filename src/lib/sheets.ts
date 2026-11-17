@@ -76,10 +76,11 @@ const g = (r: Record<string, string>, k: string): string => r[k] ?? "";
 
 const isVisible = (r: Record<string, string>) => g(r, "visible").toLowerCase() === "yes";
 
-// Section switch column (e.g. show_team): "no" in any row hides the whole section.
+// Section switch column (e.g. show_team): the first filled cell decides; "no" hides the whole section.
 // A missing or empty column keeps the section on.
 export function sectionShown(rows: Record<string, string>[], column: string): boolean {
-  return !rows.some((r) => g(r, column).trim().toLowerCase() === "no");
+  const value = rows.map((r) => g(r, column).toLowerCase()).find(Boolean);
+  return value !== "no";
 }
 
 function normalizeStatus(s: string): TripStatus {
