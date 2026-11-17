@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Instagram, Menu, X, CalendarDays, MapPin, MessageCircle } from "lucide-react";
-import { contactLink, INSTAGRAM_URL, formatDateRange, formatMonthRange, type Trip } from "@/lib/sheets";
+import { contactLink, INSTAGRAM_URL, INSTAGRAM_DM_URL, formatDateRange, formatMonthRange, type Trip } from "@/lib/sheets";
 
 import { Button } from "@/components/ui/button";
 
@@ -45,7 +45,7 @@ export function Header() {
               {n.label}
             </Link>
           ))}
-        <Button asChild className="ml-3 rounded-full bg-primary text-primary-foreground hover:bg-primary-hover"><a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer"><Instagram />Contact us</a></Button>
+        <Button asChild className="ml-3 rounded-full bg-primary text-primary-foreground hover:bg-primary-hover"><a href={INSTAGRAM_DM_URL} target="_blank" rel="noopener noreferrer"><Instagram />Contact us</a></Button>
         </nav>
         <Button variant="ghost" size="icon" className="lg:hidden" aria-label={open ? "Close menu" : "Menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
           {open ? <X /> : <Menu />}
@@ -73,7 +73,7 @@ export function Header() {
             </Link>
           ))}
         </div>
-        <Button asChild className="mt-auto h-12 rounded-full bg-primary text-base font-bold text-primary-foreground hover:bg-primary-hover"><a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer"><Instagram />Contact us</a></Button>
+        <Button asChild className="mt-auto h-12 rounded-full bg-primary text-base font-bold text-primary-foreground hover:bg-primary-hover"><a href={INSTAGRAM_DM_URL} target="_blank" rel="noopener noreferrer"><Instagram />Contact us</a></Button>
       </nav>
     )}
     </>

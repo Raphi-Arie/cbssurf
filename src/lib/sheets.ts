@@ -181,6 +181,8 @@ export function whatsappLink(
 }
 
 export const INSTAGRAM_URL = "https://instagram.com/cbs.surf";
+// Opens a direct-message chat with CBS Surf (Instagram app on phones, web chat on desktop).
+export const INSTAGRAM_DM_URL = "https://ig.me/m/cbs.surf";
 
 export function contactLink(number = DEFAULT_WHATSAPP_NUMBER): string {
   return (
