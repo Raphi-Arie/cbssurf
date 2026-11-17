@@ -34,14 +34,16 @@ function Home() {
   const { homeHeroImage } = useSiteSettings();
   return (
     <>
-      <section className="relative flex min-h-[68vh] items-end overflow-hidden md:min-h-[88vh]">
-        <img src={homeHeroImage} alt="Friends walking into the surf at sunset" width={1920} height={1088} className="absolute inset-0 h-full w-full object-cover object-[center_80%]" />
-        <div className="absolute inset-0 bg-hero-overlay" />
-        <div className="relative mx-auto w-full max-w-6xl px-5 pb-12 text-primary-foreground md:pb-24">
-          <p className="mb-4 inline-block rounded-full bg-sun px-4 py-1 text-sm font-bold text-sun-foreground">Surf trips · Community · Sunshine</p>
-          <h1 className="max-w-3xl text-4xl font-extrabold leading-[0.95] md:text-7xl">Chase waves. Find your crew.</h1>
-          <p className="mt-5 max-w-xl text-lg text-primary-foreground/90">We pack the boards, you bring the good vibes.</p>
-          <Link to="/trips" className="mt-8 inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 font-bold text-accent-foreground hover:bg-sand-hover shadow-soft transition hover:scale-105">
+      <section className="relative flex min-h-[85svh] items-end overflow-hidden md:min-h-[88vh]">
+        <img src={homeHeroImage} alt="The CBS Surf group cheering on the beach" width={1920} height={1088} className="absolute inset-0 h-full w-full object-cover object-[center_40%]" />
+        <div className="absolute inset-0 bg-hero-fade" />
+        <div className="relative mx-auto w-full max-w-6xl px-5 pb-10 text-primary-foreground md:pb-20">
+          <div className="max-w-[600px] [text-shadow:0_1px_12px_rgb(11_42_74/0.45)]">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#F2E3C6] md:text-sm">CBS Surf · since 2021</p>
+            <h1 className="text-[clamp(2.25rem,5vw,4rem)] font-extrabold leading-[1.02]">From Copenhagen to the waves.</h1>
+            <p className="mt-4 text-base text-primary-foreground/90 md:text-lg">Week-long surf trips all over the world. All levels welcome.</p>
+          </div>
+          <Link to="/trips" className="mt-7 inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 font-bold text-accent-foreground hover:bg-sand-hover shadow-soft transition hover:scale-105">
             See our trips <ArrowRight className="h-5 w-5" />
           </Link>
         </div>

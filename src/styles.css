@@ -136,6 +136,7 @@
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.52905568 0.12900598 248.79755753);
   --gradient-hero: linear-gradient(180deg, oklch(0.28130972 0.06918647 252.25843864 / 0.15) 0%, oklch(0.28130972 0.06918647 252.25843864 / 0.35) 45%, oklch(0.28130972 0.06918647 252.25843864 / 0.9) 100%);
+  --gradient-hero-fade: linear-gradient(to top, rgb(11 42 74 / 0.75) 0%, rgb(11 42 74 / 0.35) 30%, transparent 55%), linear-gradient(to right, rgb(11 42 74 / 0.4) 0%, transparent 55%);
   --shadow-soft: 0 18px 40px -22px oklch(0.28130972 0.06918647 252.25843864 / 0.28);
 }
 
@@ -159,6 +160,7 @@
   h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.02em; }
 }
 @utility bg-hero-overlay { background-image: var(--gradient-hero); }
+@utility bg-hero-fade { background-image: var(--gradient-hero-fade); }
 
 .stat-number { overflow-wrap: anywhere; }
 
