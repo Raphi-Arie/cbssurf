@@ -35,9 +35,9 @@ function Home() {
   return (
     <>
       <section className="relative flex min-h-[85svh] items-end overflow-hidden md:min-h-[88vh]">
-        <img src={homeHeroImage} alt="The CBS Surf group cheering on the beach" width={1920} height={1088} className="absolute inset-0 h-full w-full object-cover object-[center_40%]" />
+        <img src={homeHeroImage} alt="The CBS Surf group cheering on the beach" width={1920} height={1088} className="absolute inset-0 h-full w-full object-cover object-[center_75%]" />
         <div className="absolute inset-0 bg-hero-fade" />
-        <div className="relative mx-auto w-full max-w-6xl px-5 pb-10 text-primary-foreground md:pb-20">
+        <div className="relative mx-auto w-full max-w-6xl px-5 pb-6 text-primary-foreground md:pb-10">
           <div className="max-w-[600px] [text-shadow:0_1px_12px_rgb(11_42_74/0.45)]">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#F2E3C6] md:text-sm">CBS Surf · since 2021</p>
             <h1 className="text-[clamp(2.25rem,5vw,4rem)] font-extrabold leading-[1.02]">From Copenhagen to the waves.</h1>
