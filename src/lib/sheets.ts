@@ -76,6 +76,13 @@ const g = (r: Record<string, string>, k: string): string => r[k] ?? "";
 
 const isVisible = (r: Record<string, string>) => g(r, "visible").toLowerCase() === "yes";
 
+// Section switch column (e.g. show_team): the first filled cell decides; "no" hides the whole section.
+// A missing or empty column keeps the section on.
+export function sectionShown(rows: Record<string, string>[], column: string): boolean {
+  const value = rows.map((r) => g(r, column).toLowerCase()).find(Boolean);
+  return value !== "no";
+}
+
 function normalizeStatus(s: string): TripStatus {
   const v = s.toLowerCase().trim();
   if (v === "open" || v === "sold out") return v;
@@ -108,7 +115,9 @@ export function toTrips(rows: Record<string, string>[]): Trip[] {
   }));
 }
 
+// Testimonials tab: show_testimonials = no hides the section; otherwise only "yes" rows, sorted by order.
 export function toTestimonials(rows: Record<string, string>[]): Testimonial[] {
+  if (!sectionShown(rows, "show_testimonials")) return [];
   return rows
     .filter(isVisible)
     .map((r) => ({ order: Number(g(r, "order")) || 0, name: g(r, "name"), trip: g(r, "trip"), quote: g(r, "quote"), photo_url: cloudinary(g(r, "photo_url")) }))
@@ -131,8 +140,10 @@ export function teamPhoto(url: string): string {
   return url.replace("/upload/", `/upload/${TEAM_PHOTO}/`);
 }
 
-// Team tab (order, name, role, intro, photo_url, visible): only "yes" rows with a name, sorted by order.
+// Team tab (order, name, role, intro, photo_url, visible, show_team): show_team = no hides the section;
+// otherwise only "yes" rows with a name, sorted by order.
 export function toTeam(rows: Record<string, string>[]): TeamMember[] {
+  if (!sectionShown(rows, "show_team")) return [];
   return rows
     .filter(isVisible)
     .filter((r) => g(r, "name"))

@@ -17,6 +17,17 @@ describe("sheet rules", () => {
       { order: 2, name: "Mia", role: "Coach", intro: "Hi, I surf", photo_url: "" },
     ]);
   });
+  it("hides the whole team section when show_team is no", () => {
+    const head = "order,name,role,intro,photo_url,visible,show_team\n";
+    expect(toTeam(parseCsv(head + "1,Jonas,Coach,,,yes,No\n2,Mia,Coach,,,yes,"))).toEqual([]);
+    expect(toTeam(parseCsv(head + "1,Jonas,Coach,,,yes,yes\n2,Mia,Coach,,,yes,")).map((m) => m.name)).toEqual(["Jonas", "Mia"]);
+    expect(toTeam(parseCsv(head + "1,Jonas,Coach,,,yes,\n2,Mia,Coach,,,yes,")).map((m) => m.name)).toEqual(["Jonas", "Mia"]);
+  });
+  it("hides the whole testimonials section when show_testimonials is no", () => {
+    const head = "order,name,trip,quote,photo_url,visible,show_testimonials\n";
+    expect(toTestimonials(parseCsv(head + "1,Anna,Bali,Great,,yes,no"))).toEqual([]);
+    expect(toTestimonials(parseCsv(head + "1,Anna,Bali,Great,,yes,YES")).map((t) => t.name)).toEqual(["Anna"]);
+  });
   it("face-crops Cloudinary team photos once and leaves other URLs alone", () => {
     const url = "https://res.cloudinary.com/x/image/upload/v1/jonas.png";
     const cropped = "https://res.cloudinary.com/x/image/upload/c_fill,g_face,w_400,h_400,f_auto,q_auto/v1/jonas.png";
