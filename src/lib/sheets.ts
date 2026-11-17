@@ -180,6 +180,8 @@ export function whatsappLink(
   return `https://wa.me/${number}?text=${encodeURIComponent(msg)}`;
 }
 
+export const INSTAGRAM_URL = "https://instagram.com/cbs.surf";
+
 export function contactLink(number = DEFAULT_WHATSAPP_NUMBER): string {
   return (
     `https://wa.me/${number}?text=` +

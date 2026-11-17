@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Instagram, Menu, X, CalendarDays, MapPin, MessageCircle } from "lucide-react";
-import { contactLink, formatDateRange, formatMonthRange, type Trip } from "@/lib/sheets";
+import { contactLink, INSTAGRAM_URL, formatDateRange, formatMonthRange, type Trip } from "@/lib/sheets";
 
 import { Button } from "@/components/ui/button";
 
@@ -24,9 +24,8 @@ const nav = [
   { to: "/about", label: "About us" },
 ] as const;
 
-export function Header({ whatsappNumber }: { whatsappNumber?: string }) {
+export function Header() {
   const [open, setOpen] = useState(false);
-  const contactUrl = contactLink(whatsappNumber);
   return (
     <>
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
@@ -46,7 +45,7 @@ export function Header({ whatsappNumber }: { whatsappNumber?: string }) {
               {n.label}
             </Link>
           ))}
-        <Button asChild className="ml-3 rounded-full bg-primary text-primary-foreground hover:bg-primary-hover"><a href={contactUrl} target="_blank" rel="noopener noreferrer"><MessageCircle />Contact us</a></Button>
+        <Button asChild className="ml-3 rounded-full bg-primary text-primary-foreground hover:bg-primary-hover"><a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer"><Instagram />Contact us</a></Button>
         </nav>
         <Button variant="ghost" size="icon" className="lg:hidden" aria-label={open ? "Close menu" : "Menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
           {open ? <X /> : <Menu />}
@@ -74,7 +73,7 @@ export function Header({ whatsappNumber }: { whatsappNumber?: string }) {
             </Link>
           ))}
         </div>
-        <Button asChild className="mt-auto h-12 rounded-full bg-primary text-base font-bold text-primary-foreground hover:bg-primary-hover"><a href={contactUrl} target="_blank" rel="noopener noreferrer"><MessageCircle />Contact us</a></Button>
+        <Button asChild className="mt-auto h-12 rounded-full bg-primary text-base font-bold text-primary-foreground hover:bg-primary-hover"><a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer"><Instagram />Contact us</a></Button>
       </nav>
     )}
     </>
@@ -93,7 +92,7 @@ export function Footer({ whatsappNumber }: { whatsappNumber?: string }) {
             <a href={contactUrl} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-accent text-accent-foreground transition hover:bg-sand-hover">
               <MessageCircle className="h-5 w-5" />
             </a>
-            <a href="https://instagram.com/cbs.surf" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-accent text-accent-foreground transition hover:bg-sand-hover">
+            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-accent text-accent-foreground transition hover:bg-sand-hover">
               <Instagram className="h-5 w-5" />
             </a>
           </div>

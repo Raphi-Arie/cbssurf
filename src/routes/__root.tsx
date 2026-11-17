@@ -99,7 +99,7 @@ function RootComponent() {
   const { whatsappNumber } = Route.useLoaderData() ?? defaultSettings;
   return (
     <QueryClientProvider client={queryClient}>
-      <Header whatsappNumber={whatsappNumber} />
+      <Header />
       <main>
         <Outlet />
       </main>
